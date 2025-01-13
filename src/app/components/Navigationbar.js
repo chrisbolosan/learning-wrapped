@@ -8,7 +8,6 @@ export const Navbar = () => {
   return (
     <div className="bg-[#13141f] text-white p-4 shadow-md">
       <div className="flex flex-col md:!flex-row items-center justify-between">
-        {/* Left: Logo */}
         <div className="flex items-center space-x-4">
           <Image
             src="/lwicon.svg"
@@ -20,7 +19,6 @@ export const Navbar = () => {
           <span className="text-lg font-semibold">Learning Wrapped</span>
         </div>
 
-        {/* Center: Navigation Buttons */}
         <div className="flex items-center space-x-4">
           <button className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none">
             <HomeIcon fontSize="small" />
@@ -40,7 +38,6 @@ export const Navbar = () => {
           </button>
         </div>
 
-        {/* Right: User Profile */}
         <div className="flex items-center space-x-4">
           <span className="text-sm font-medium p-4">Alysa Myers</span>
           <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-black font-medium">
