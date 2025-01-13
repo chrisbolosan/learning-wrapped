@@ -8,7 +8,7 @@ import HistoryIcon from '@mui/icons-material/History';
 export const Navbar = () => {
   return (
     <div className="bg-[#13141f] text-white p-4 shadow-md">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:!flex-row items-center justify-between">
         {/* Left: Logo */}
         <div className="flex items-center space-x-4">
           <Image
@@ -43,8 +43,8 @@ export const Navbar = () => {
 
         {/* Right: User Profile */}
         <div className="flex items-center space-x-4">
-          <span className="text-sm font-medium">Alysa Myers</span>
-          <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-black font-medium overflow-hidden">
+          <span className="text-sm font-medium p-4">Alysa Myers</span>
+          <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-black font-medium">
             <Image
               src="/alyssa.png"
               alt="user"
