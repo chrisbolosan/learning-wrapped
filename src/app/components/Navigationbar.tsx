@@ -5,7 +5,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import AppsIcon from '@mui/icons-material/Apps';
 import HistoryIcon from '@mui/icons-material/History';
 
-export const Navbar = () => {
+export const Navbar: React.FC = () => {
   return (
     <div className="bg-[#13141f] text-white p-4 shadow-md">
       <div className="flex flex-col md:!flex-row items-center justify-between">
