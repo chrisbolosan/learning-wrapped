@@ -2,7 +2,7 @@ import React from 'react';
 
 export const ActivityCard = ({ title, icon, isFavorite, onToggleFavorite }) => {
   return (
-    <div className="bg-[#1a1b26] rounded-lg border-2 border-purple-500/20 p-6 flex flex-col items-center justify-center relative">
+    <div className="bg-[#1a1b26] rounded-lg border-2 border-purple-500/20 p-6 flex flex-col items-center justify-center relative transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
       <div className="absolute top-2 right-2">
         <button
           onClick={onToggleFavorite}
