@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
@@ -23,34 +22,22 @@ export const Navbar = () => {
 
         {/* Center: Navigation Buttons */}
         <div className="flex items-center space-x-4">
-          <Link
-            href="/spaces"
-            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
-          >
+          <button className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none">
             <HomeIcon fontSize="small" />
             <span>Home</span>
-          </Link>
-          <Link
-            href="/spaces"
-            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
-          >
+          </button>
+          <button className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none">
             <GroupIcon fontSize="small" />
             <span>Assistants</span>
-          </Link>
-          <Link
-            href="/spaces"
-            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md border-2 border-purple-500 text-purple-400 hover:bg-purple-700 hover:text-white focus:outline-none"
-          >
+          </button>
+          <button className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md border-2 border-purple-500 text-purple-400 hover:bg-purple-700 hover:text-white focus:outline-none">
             <AppsIcon fontSize="small" />
             <span>Spaces</span>
-          </Link>
-          <Link
-            href="/spaces"
-            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
-          >
+          </button>
+          <button className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none">
             <HistoryIcon fontSize="small" />
             <span>History</span>
-          </Link>
+          </button>
         </div>
 
         {/* Right: User Profile */}
