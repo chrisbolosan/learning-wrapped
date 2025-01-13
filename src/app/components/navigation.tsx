@@ -22,7 +22,13 @@ import {
 const Navigation = () => {
   const pathname = usePathname();
 
-  const NavLink = ({ href, icon: Icon, text }) => {
+  interface NavLinkProps {
+    href: string;
+    icon: React.ElementType;
+    text: string;
+  }
+
+  const NavLink = ({ href, icon: Icon, text }: NavLinkProps) => {
     const isActive = pathname === href;
     return (
       <Link
