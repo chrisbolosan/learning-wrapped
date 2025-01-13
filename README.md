@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MarvelAI Hackathon
+
+A visual journey of milestones throughout the year. Gamify learning with digital badges for completing certifications or streaks.
 
 ## Getting Started
 
