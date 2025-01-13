@@ -5,6 +5,7 @@ import { CourseCard } from '../components/Coursecard';
 import { ActivityCard } from '../components/Activitycard';
 import { CreatorCard } from '../components/Creatorcard';
 import { Searchbar } from '../components/Searchbar';
+
 const DashboardLayout = () => {
   const creators = [
     { name: 'John', imageSrc: '/john.png' },
@@ -89,6 +90,7 @@ const DashboardLayout = () => {
   const [favorites, setFavorites] = useState([]);
   const [courseData] = useState(initialCourses);
   const [activities] = useState(initialActivities);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleToggleFavorite = (item, type) => {
     setFavorites((prevFavorites) => {
@@ -103,10 +105,17 @@ const DashboardLayout = () => {
       return [...prevFavorites, { ...item, type }];
     });
   };
+  const filteredCourses = courseData.filter((course) =>
+    course.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredActivities = activities.filter((activity) =>
+    activity.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-[#13141f] text-white p-8 space-y-12">
-      <Searchbar />
+      <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       {/* Favorites Section */}
       <section>
         <h2 className="text-lg font-medium mb-4">Favorites</h2>
@@ -139,7 +148,7 @@ const DashboardLayout = () => {
       <section>
         <h2 className="text-lg font-medium mb-4">Popular Now</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {courseData.map((course) => (
+          {filteredCourses.map((course) => (
             <CourseCard
               key={course.id}
               {...course}
@@ -154,8 +163,9 @@ const DashboardLayout = () => {
 
       {/* Common Activities */}
       <section>
+        <h2 className="text-lg font-medium mb-4">Common Activities </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {activities.map((activity) => (
+          {filteredActivities.map((activity) => (
             <ActivityCard
               key={activity.id}
               {...activity}
@@ -174,7 +184,7 @@ const DashboardLayout = () => {
       <section>
         <h2 className="text-lg font-medium mb-4">Recently Accessed</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {courseData.map((course) => (
+          {filteredCourses.map((course) => (
             <CourseCard
               key={course.id}
               {...course}
@@ -204,7 +214,7 @@ const DashboardLayout = () => {
       <section>
         <h2 className="text-lg font-medium mb-4">Subject-Specific</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {courseData.map((course) => (
+          {filteredCourses.map((course) => (
             <CourseCard
               key={course.id}
               {...course}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Searchbar = () => {
+export const Searchbar = ({ searchQuery, setSearchQuery }) => {
   return (
     <div className="flex items-center justify-end mb-8">
       <></>
@@ -9,6 +9,8 @@ export const Searchbar = () => {
           type="text"
           placeholder="Search for a space"
           className="w-full bg-gray-800 text-white text-sm py-2 pl-10 pr-4 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <svg
           className="absolute top-1/2 left-3 transform -translate-y-1/2 w-5 h-5 text-gray-400"
