@@ -6,10 +6,9 @@ const CourseCard = ({
   title,
   description,
   imageSrc,
-  isFavorite: initialFavorite = false,
+  isFavorite,
+  onToggleFavorite,
 }) => {
-  const [isFavorite, setIsFavorite] = useState(initialFavorite);
-
   return (
     <div className="bg-[#1a1b26] rounded-lg overflow-hidden border border-blue-900/30 max-w-80">
       <button
@@ -25,7 +24,7 @@ const CourseCard = ({
           className="w-full h-[140px] object-cover"
         />
         <button
-          onClick={() => setIsFavorite(!isFavorite)}
+          onClick={onToggleFavorite}
           className="absolute top-3 right-3 text-white hover:scale-110 transition-transform"
         >
           <svg
@@ -50,7 +49,6 @@ const CourseCard = ({
     </div>
   );
 };
-
 const ActivityCard = ({ icon, title }) => (
   <div className="bg-[#1a1b26] rounded-lg border border-purple-500/20 p-6 flex flex-col items-center justify-center relative">
     <div className="absolute top-2 right-2">
@@ -87,33 +85,36 @@ const CreatorCard = ({ name, imageSrc }) => (
 );
 
 const DashboardLayout = () => {
-  const courseData = [
+  const initialCourses = [
     {
+      id: 1,
       title: 'Math Playground',
       description:
         'The AI-Generated Quiz Tool project focuses on providing students and learners with accessible and effective means to reinforce...',
       imageSrc: '/math_playground.png',
     },
     {
+      id: 2,
       title: 'Science Lab',
       description:
         'The AI-Generated Quiz Tool project focuses on providing students and learners with accessible and effective means to reinforce...',
       imageSrc: '/science_lab.png',
     },
     {
-      title: 'Science Lab',
+      id: 3,
+      title: 'Art Studio',
       description:
-        'The AI-Generated Quiz Tool project focuses on providing students and learners with accessible and effective means to reinforce...',
+        'Explore your creativity with interactive activities designed for artistic growth and self-expression.',
       imageSrc: '/science_lab.png',
     },
     {
-      title: 'Math Playground',
+      id: 4,
+      title: 'History Archives',
       description:
-        'The AI-Generated Quiz Tool project focuses on providing students and learners with accessible and effective means to reinforce...',
+        'Dive into the past with engaging history lessons and archival exploration tools.',
       imageSrc: '/math_playground.png',
     },
   ];
-
   const activities = [
     {
       title: 'Class Sidekick',
@@ -178,16 +179,39 @@ const DashboardLayout = () => {
     { name: 'Paul', imageSrc: '/paul.png' },
   ];
 
+  const [favorites, setFavorites] = useState([]);
+  const [courseData] = useState(initialCourses);
+
+  const handleToggleFavorite = (course) => {
+    setFavorites((prevFavorites) => {
+      if (prevFavorites.some((fav) => fav.id === course.id)) {
+        // Remove from favorites
+        return prevFavorites.filter((fav) => fav.id !== course.id);
+      }
+      // Add to favorites
+      return [...prevFavorites, course];
+    });
+  };
+
   return (
     <div className="min-h-screen bg-[#13141f] text-white p-8 space-y-12">
-      {/* Favorites */}
+      {/* Favorites Section */}
       <section>
         <h2 className="text-lg font-medium mb-4">Favorites</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
-          {courseData.map((course, index) => (
-            <CourseCard key={index} {...course} />
-          ))}
-        </div>
+        {favorites.length === 0 ? (
+          <p className="text-gray-400">No favorites added yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {favorites.map((course) => (
+              <CourseCard
+                key={course.id}
+                {...course}
+                isFavorite
+                onToggleFavorite={() => handleToggleFavorite(course)}
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Common Activities */}
@@ -196,7 +220,7 @@ const DashboardLayout = () => {
           <h2 className="text-lg font-medium">Common Activities</h2>
           <div className="flex-1 h-px bg-gray-800 ml-4" />
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {activities.map((activity, index) => (
             <ActivityCard key={index} {...activity} />
           ))}
@@ -206,9 +230,14 @@ const DashboardLayout = () => {
       {/* Popular Now */}
       <section>
         <h2 className="text-lg font-medium mb-4">Popular Now</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
-          {courseData.map((course, index) => (
-            <CourseCard key={index} {...course} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {courseData.map((course) => (
+            <CourseCard
+              key={course.id}
+              {...course}
+              isFavorite={favorites.some((fav) => fav.id === course.id)}
+              onToggleFavorite={() => handleToggleFavorite(course)}
+            />
           ))}
         </div>
       </section>
@@ -216,9 +245,14 @@ const DashboardLayout = () => {
       {/* Recently Accessed */}
       <section>
         <h2 className="text-lg font-medium mb-4">Recently Accessed</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
-          {courseData.map((course, index) => (
-            <CourseCard key={index} {...course} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {courseData.map((course) => (
+            <CourseCard
+              key={course.id}
+              {...course}
+              isFavorite={favorites.some((fav) => fav.id === course.id)}
+              onToggleFavorite={() => handleToggleFavorite(course)}
+            />
           ))}
         </div>
       </section>
@@ -239,9 +273,14 @@ const DashboardLayout = () => {
       {/* Subject-Specific */}
       <section>
         <h2 className="text-lg font-medium mb-4">Subject-Specific</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
-          {courseData.map((course, index) => (
-            <CourseCard key={index} {...course} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {courseData.map((course) => (
+            <CourseCard
+              key={course.id}
+              {...course}
+              isFavorite={favorites.some((fav) => fav.id === course.id)}
+              onToggleFavorite={() => handleToggleFavorite(course)}
+            />
           ))}
         </div>
       </section>
