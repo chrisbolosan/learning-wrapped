@@ -5,6 +5,7 @@ import { CourseCard } from '../components/Coursecard';
 import { ActivityCard } from '../components/Activitycard';
 import { CreatorCard } from '../components/Creatorcard';
 import { Searchbar } from '../components/Searchbar';
+import { Navbar } from '../components/Navigationbar';
 
 const DashboardLayout = () => {
   const creators = [
@@ -115,6 +116,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-screen bg-[#13141f] text-white p-8 space-y-12">
+      <Navbar />
       <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       {/* Favorites Section */}
       <section>
