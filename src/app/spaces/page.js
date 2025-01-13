@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { CourseCard } from '../components/Coursecard';
 import { ActivityCard } from '../components/Activitycard';
 import { CreatorCard } from '../components/Creatorcard';
-
+import { Searchbar } from '../components/Searchbar';
 const DashboardLayout = () => {
   const creators = [
     { name: 'John', imageSrc: '/john.png' },
@@ -106,6 +106,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-screen bg-[#13141f] text-white p-8 space-y-12">
+      <Searchbar />
       {/* Favorites Section */}
       <section>
         <h2 className="text-lg font-medium mb-4">Favorites</h2>
