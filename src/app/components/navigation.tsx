@@ -18,7 +18,7 @@ import {
   Group,
   Apps,
 } from '@mui/icons-material';
-
+import AssessmentIcon from '@mui/icons-material/Assessment';
 const Navigation = () => {
   const pathname = usePathname();
 
@@ -38,7 +38,7 @@ const Navigation = () => {
           ${
             isActive
               ? 'bg-purple-600 text-white'
-              : 'text-gray-400 hover:text-white hover:bg-white/10'
+              : 'text-white hover:text-white hover:bg-white/10'
           }
         `}
       >
@@ -73,15 +73,12 @@ const Navigation = () => {
             <NavLink href="/" icon={Home} text="Home" />
             <NavLink href="#" icon={Group} text="Assistants" />
             <NavLink href="/spaces" icon={Apps} text="Spaces" />
-            <NavLink href="#" icon={History} text="History" />
+            <NavLink href="/stats" icon={AssessmentIcon} text="Stats" />
           </Box>
 
           <Box className="flex items-center gap-4">
             <Box className="relative flex items-center">
-              <Search
-                className="text-gray-400 absolute left-3"
-                fontSize="small"
-              />
+              <Search className="text-white absolute left-3" fontSize="small" />
               <InputBase
                 placeholder="Search for a space"
                 className="bg-[#2a2435] text-white font-bold text-sm pl-10 pr-4 py-1 rounded-lg w-64"
