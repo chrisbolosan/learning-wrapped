@@ -23,22 +23,34 @@ export const Navbar = () => {
 
         {/* Center: Navigation Buttons */}
         <div className="flex items-center space-x-4">
-          <button className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none">
+          <Link
+            href="/spaces"
+            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
+          >
             <HomeIcon fontSize="small" />
             <span>Home</span>
-          </button>
-          <button className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none">
+          </Link>
+          <Link
+            href="/spaces"
+            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
+          >
             <GroupIcon fontSize="small" />
             <span>Assistants</span>
-          </button>
-          <button className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md border-2 border-purple-500 text-purple-400 hover:bg-purple-700 hover:text-white focus:outline-none">
+          </Link>
+          <Link
+            href="/spaces"
+            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md border-2 border-purple-500 text-purple-400 hover:bg-purple-700 hover:text-white focus:outline-none"
+          >
             <AppsIcon fontSize="small" />
             <span>Spaces</span>
-          </button>
-          <button className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none">
+          </Link>
+          <Link
+            href="/spaces"
+            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
+          >
             <HistoryIcon fontSize="small" />
             <span>History</span>
-          </button>
+          </Link>
         </div>
 
         {/* Right: User Profile */}
