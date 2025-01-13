@@ -10,14 +10,7 @@ import {
   Avatar,
   Box,
 } from '@mui/material';
-import {
-  Home,
-  Search,
-  History,
-  ArrowBack,
-  Group,
-  Apps,
-} from '@mui/icons-material';
+import { Home, Search, ArrowBack, Group, Apps } from '@mui/icons-material';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 const Navigation = () => {
   const pathname = usePathname();
