@@ -148,7 +148,11 @@ const DashboardLayout = () => {
 
       {/* Popular Now */}
       <section>
-        <h2 className="text-lg font-medium mb-4">Popular Now</h2>
+        <div className="flex items-center mb-4">
+          <h2 className="text-lg font-medium">Popular Now</h2>
+          <div className="flex-1 h-px bg-gray-800 ml-4" />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {filteredCourses.map((course) => (
             <CourseCard
@@ -165,7 +169,11 @@ const DashboardLayout = () => {
 
       {/* Common Activities */}
       <section>
-        <h2 className="text-lg font-medium mb-4">Common Activities </h2>
+        <div className="flex items-center mb-4">
+          <h2 className="text-lg font-medium">Common Activities</h2>
+          <div className="flex-1 h-px bg-gray-800 ml-4" />
+        </div>
+        <h2 className="text-lg font-medium mb-4"> </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {filteredActivities.map((activity) => (
             <ActivityCard
@@ -184,7 +192,11 @@ const DashboardLayout = () => {
 
       {/* Recently Accessed */}
       <section>
-        <h2 className="text-lg font-medium mb-4">Recently Accessed</h2>
+        <div className="flex items-center mb-4">
+          <h2 className="text-lg font-medium">Recently Accessed</h2>
+          <div className="flex-1 h-px bg-gray-800 ml-4" />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {filteredCourses.map((course) => (
             <CourseCard
@@ -214,7 +226,11 @@ const DashboardLayout = () => {
 
       {/* Subject-Specific */}
       <section>
-        <h2 className="text-lg font-medium mb-4">Subject-Specific</h2>
+        <div className="flex items-center mb-4">
+          <h2 className="text-lg font-medium">Subject-Specific</h2>
+          <div className="flex-1 h-px bg-gray-800 ml-4" />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {filteredCourses.map((course) => (
             <CourseCard
