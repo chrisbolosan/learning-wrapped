@@ -1,6 +1,14 @@
 import React from 'react';
 
-export const Searchbar = ({ searchQuery, setSearchQuery }) => {
+interface SearchbarProps {
+  searchQuery: string;
+  setSearchQuery: (value: string) => void;
+}
+
+export const Searchbar: React.FC<SearchbarProps> = ({
+  searchQuery,
+  setSearchQuery,
+}) => {
   return (
     <div className="flex items-center justify-end mb-8">
       <></>
