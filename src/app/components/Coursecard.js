@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 
 export const CourseCard = ({
   title,
@@ -11,12 +12,11 @@ export const CourseCard = ({
 }) => {
   return (
     <div className="bg-[#1a1b26] rounded-lg overflow-hidden border border-blue-900/30 max-w-80">
-      <button
-        className="w-full bg-blue-600 px-4 py-2 flex justify-between items-center text-white text-sm border-none hover:bg-blue-700 hover:opacity-70 transition-colors rounded"
-        onClick={() => alert(`Opening course: ${title}`)}
-      >
-        Open
-      </button>
+      <Link href="/404">
+        <button className="w-full bg-blue-600 px-4 py-2 flex justify-between items-center text-white text-sm border-none hover:bg-blue-700 hover:opacity-70 transition-colors rounded">
+          Open
+        </button>
+      </Link>
       <div className="relative">
         <img
           src={imageSrc}

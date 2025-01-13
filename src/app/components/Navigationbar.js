@@ -45,7 +45,7 @@ export const Navbar = () => {
             <span>Spaces</span>
           </Link>
           <Link
-            href="/spaces"
+            href="/404"
             className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
           >
             <HistoryIcon fontSize="small" />
