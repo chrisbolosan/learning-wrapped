@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 interface CourseCardProps {
   title: string;
-  description: string;
+  description?: string;
   imageSrc: string;
   isFavorite: boolean;
   onToggleFavorite: () => void;
@@ -21,7 +21,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
   return (
     <div className="bg-[#1a1b26] rounded-lg overflow-hidden border border-blue-900/30 max-w-80 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
       <Link href="/404">
-        <button className="w-full bg-blue-600 px-4 py-2 flex justify-between items-center text-white text-sm border-none hover:bg-blue-700 hover:opacity-70 transition-colors rounded">
+        <button className="w-full bg-blue-600 px-4 py-2 flex justify-between items-center text-white text-sm border-none hover:bg-blue-700 hover:opacity-70 transition-colors rounded rounded-b-none">
           Open
         </button>
       </Link>
