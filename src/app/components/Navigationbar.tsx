@@ -25,28 +25,28 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center space-x-4">
           <Link
             href="/spaces"
-            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
+            className="flex items-center space-x-2 border-2 border-purple-500/20 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
           >
             <HomeIcon fontSize="small" />
             <span>Home</span>
           </Link>
           <Link
             href="/chatbot"
-            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
+            className="flex items-center space-x-2 border-2 border-purple-500/20 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
           >
             <GroupIcon fontSize="small" />
             <span>Chat</span>
           </Link>
           <Link
             href="/spaces"
-            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
+            className="flex items-center space-x-2 border-2 border-purple-500/20 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
           >
             <AppsIcon fontSize="small" />
             <span>Spaces</span>
           </Link>
           <Link
             href="/404"
-            className="flex items-center space-x-2 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
+            className="flex items-center space-x-2 border-2 border-purple-500/20 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
           >
             <HistoryIcon fontSize="small" />
             <span>History</span>

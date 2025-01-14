@@ -70,15 +70,15 @@ export default function ChatbotPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-4 md:p-8">
+    <div className="min-h-screen bg-[#13141f] p-4 md:p-8">
       <Navbar />
       <div className="mx-auto max-w-4xl space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="mb-2 text-3xl font-bold text-gray-900">
+          <h1 className="mb-2 text-3xl font-bold text-white">
             Teacher Management Assistant
           </h1>
-          <p className="text-gray-600">
+          <p className="text-white">
             Get instant insights about your teaching stats, schedule, and work
           </p>
         </div>
@@ -87,7 +87,7 @@ export default function ChatbotPage() {
         <div className="overflow-hidden rounded-xl bg-white shadow-lg">
           <div className="border-b border-gray-200 p-6">
             <h2 className="text-xl font-semibold text-gray-900">
-              Chat with the Assistant
+              Chat with the AI Assistant
             </h2>
           </div>
 
