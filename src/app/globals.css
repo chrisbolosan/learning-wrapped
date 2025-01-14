@@ -1,5 +1,35 @@
 @tailwind base;
 @tailwind components;
+@layer components {
+  .btn-custom {
+    @apply border transition-all ease-in duration-200 relative overflow-hidden cursor-pointer z-10 border-gray-600 bg-blue-700   px-4 py-2 flex justify-between items-center text-white text-sm border-none rounded rounded-b-none;
+  }
+
+  .btn-custom::before {
+    content: '';
+    @apply absolute left-1/2 top-full transform -translate-x-1/2 scale-y-100 scale-x-[1.25] w-[140%] h-[180%] rounded-full transition-all ease-custom-ease duration-500 delay-100;
+    z-index: -1;
+  }
+
+  .btn-custom::after {
+    content: '';
+    @apply absolute left-[55%] top-[180%] transform -translate-x-1/2 scale-y-100 scale-x-[1.45] w-[160%] h-[190%] bg-blue-700 text-gray-500 rounded-full transition-all ease-custom-ease duration-500 delay-100;
+    z-index: -1;
+  }
+
+  .btn-custom:hover {
+    @apply text-white border-[#39bda7];
+  }
+
+  .btn-custom:hover::before {
+    @apply top-[-35%] bg-transparent transform -translate-x-1/2 scale-y-[1.3] scale-x-[0.8];
+  }
+
+  .btn-custom:hover::after {
+    @apply top-[-45%] bg-blue-500 transform -translate-x-1/2 scale-y-[1.3] scale-x-[0.8];
+  }
+}
+
 @tailwind utilities;
 
 :root {
