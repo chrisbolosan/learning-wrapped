@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
-
+import Link from 'next/link';
 interface ActivityCardProps {
   title: string;
-  icon: ReactNode;
+  icon?: ReactNode;
   isFavorite: boolean;
   onToggleFavorite: () => void;
 }
@@ -35,10 +35,12 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
           </svg>
         </button>
       </div>
-      <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center mb-3">
-        {icon}
-      </div>
-      <span className="text-white text-center">{title}</span>
+      <Link href="/404">
+        <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center mb-3 mx-auto">
+          {icon}
+        </div>
+        <span className="text-white text-center">{title}</span>
+      </Link>
     </div>
   );
 };
