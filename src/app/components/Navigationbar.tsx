@@ -10,17 +10,18 @@ export const Navbar: React.FC = () => {
     <div className="bg-[#13141f] text-white p-4 shadow-md">
       <div className="flex flex-col md:!flex-row items-center justify-between">
         {/* Left: Logo */}
-        <div className="flex items-center space-x-4">
-          <Image
-            src="/lwicon.svg"
-            alt="user"
-            width={46}
-            height={46}
-            className="object-cover"
-          />
-          <span className="text-lg font-semibold">Learning Wrapped</span>
-        </div>
-
+        <Link href="/spaces">
+          <div className="flex items-center space-x-4">
+            <Image
+              src="/lwicon.svg"
+              alt="user"
+              width={46}
+              height={46}
+              className="object-cover"
+            />
+            <span className="text-lg font-semibold">Learning Wrapped</span>
+          </div>
+        </Link>
         {/* Center: Navigation Buttons */}
         <div className="flex items-center space-x-4">
           <Link
