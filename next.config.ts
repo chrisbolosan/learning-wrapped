@@ -16,10 +16,6 @@ const nextConfig: NextConfig = {
             value: 'https://learning-wrapped.vercel.app/',
           },
           {
-            key: 'Access-Control-Allow-Methods',
-            value: 'POST, OPTIONS',
-          },
-          {
             key: 'Access-Control-Allow-Headers',
             value: 'Content-Type, Authorization, X-Requested-With',
           },
