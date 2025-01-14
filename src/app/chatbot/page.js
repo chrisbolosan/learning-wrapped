@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Navbar } from '../components/Navigationbar';
+import Confetti from 'react-confetti';
 
 const teacherData = {
   name: 'Jane Doe',
@@ -21,6 +22,7 @@ export default function ChatbotPage() {
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const handleChat = async () => {
     if (!userInput.trim()) return;
@@ -60,6 +62,8 @@ export default function ChatbotPage() {
   const handleFeedback = () => {
     if (!feedback.trim()) return;
     setFeedbackSubmitted(true);
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 10000);
   };
 
   const handleKeyPress = (e) => {
@@ -145,6 +149,7 @@ export default function ChatbotPage() {
               onClick={handleFeedback}
               className="rounded-lg bg-blue-500 px-6 py-2 font-medium text-white transition-colors hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
+              {showConfetti && <Confetti />}
               Submit Feedback
             </button>
             {feedbackSubmitted && (
