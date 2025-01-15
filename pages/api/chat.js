@@ -27,18 +27,9 @@ export default async function handler(req, res) {
 
     const result = await chat.sendMessage(prompt);
     const response = result.response;
-
-    console.log('Full Response Object:', JSON.stringify(response, null, 2));
-    console.log('Candidates:', response?.candidates);
-    console.log('First Candidate:', response?.candidates?.[0]);
-    console.log('Content:', response?.candidates?.[0]?.content);
-    console.log('Parts:', response?.candidates?.[0]?.content?.parts);
-    console.log('Text:', response?.candidates?.[0]?.content?.parts?.[0]?.text);
-
     const aiResponseText = response?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (aiResponseText) {
-      console.log('AI Response Text:', aiResponseText);
       return res.status(200).json({ message: aiResponseText });
     } else {
       console.error(
