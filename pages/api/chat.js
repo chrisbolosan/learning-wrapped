@@ -1,8 +1,6 @@
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -16,20 +14,45 @@ export default async function handler(req, res) {
   }
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        { role: 'system', content: 'You are a helpful assistant.' },
-        { role: 'user', content: prompt },
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+
+    const chat = model.startChat({
+      history: [
+        {
+          role: 'user',
+          parts: [{ text: prompt }],
+        },
       ],
     });
 
-    const message = completion.data.choices[0].message.content;
-    res.status(200).json({ message });
-    console.log('immeessage', res.status(200).json({ message }));
+    const result = await chat.sendMessage(prompt);
+    const response = result.response;
+
+    console.log('Full Response Object:', JSON.stringify(response, null, 2));
+    console.log('Candidates:', response?.candidates);
+    console.log('First Candidate:', response?.candidates?.[0]);
+    console.log('Content:', response?.candidates?.[0]?.content);
+    console.log('Parts:', response?.candidates?.[0]?.content?.parts);
+    console.log('Text:', response?.candidates?.[0]?.content?.parts?.[0]?.text);
+
+    const aiResponseText = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (aiResponseText) {
+      console.log('AI Response Text:', aiResponseText);
+      return res.status(200).json({ message: aiResponseText });
+    } else {
+      console.error(
+        'Failed to extract AI response text:',
+        JSON.stringify(response, null, 2)
+      );
+      return res
+        .status(500)
+        .json({ error: 'Failed to extract AI response text' });
+    }
   } catch (error) {
-    res.status(500).json({
-      error: 'Failed to fetch OpenAI response',
+    console.error('Error in API route:', error);
+    return res.status(500).json({
+      error: 'Failed to fetch Generative AI response',
       details: error.message,
     });
   }
