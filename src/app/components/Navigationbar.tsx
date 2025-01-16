@@ -1,3 +1,6 @@
+'use client';
+
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import HomeIcon from '@mui/icons-material/Home';
@@ -8,7 +11,7 @@ import HistoryIcon from '@mui/icons-material/History';
 export const Navbar: React.FC = () => {
   return (
     <div className="bg-[#13141f] text-white p-4 shadow-md">
-      <div className="flex flex-col md:!flex-row items-center justify-between">
+      <div className="flex flex-col md:flex-row items-center justify-between">
         {/* Left: Logo */}
         <Link href="/spaces">
           <div className="flex items-center space-x-4">
@@ -17,6 +20,7 @@ export const Navbar: React.FC = () => {
               alt="user"
               width={46}
               height={46}
+              priority
               className="object-cover"
             />
             <span className="text-lg font-semibold">Learning Wrapped</span>
@@ -24,36 +28,38 @@ export const Navbar: React.FC = () => {
         </Link>
         {/* Center: Navigation Buttons */}
         <div className="flex items-center space-x-4">
-          <Link
-            href="/spaces"
-            className="flex items-center space-x-2 border-2 border-purple-500/20 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
-          >
-            <HomeIcon fontSize="small" />
-            <span>Home</span>
-          </Link>
-          <Link
-            href="/chatbot"
-            className="flex items-center space-x-2 border-2 border-purple-500/20 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
-          >
-            <GroupIcon fontSize="small" />
-            <span>Chat</span>
-          </Link>
-          <Link
-            href="/spaces"
-            className="flex items-center space-x-2 border-2 border-purple-500/20 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
-          >
-            <AppsIcon fontSize="small" />
-            <span>Spaces</span>
-          </Link>
-          <Link
-            href="/404"
-            className="flex items-center space-x-2 border-2 border-purple-500/20 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
-          >
-            <HistoryIcon fontSize="small" />
-            <span>History</span>
-          </Link>
+          {[
+            {
+              href: '/spaces',
+              icon: <HomeIcon fontSize="small" />,
+              label: 'Home',
+            },
+            {
+              href: '/chatbot',
+              icon: <GroupIcon fontSize="small" />,
+              label: 'Chat',
+            },
+            {
+              href: '/spaces',
+              icon: <AppsIcon fontSize="small" />,
+              label: 'Spaces',
+            },
+            {
+              href: '/404',
+              icon: <HistoryIcon fontSize="small" />,
+              label: 'History',
+            },
+          ].map((link, idx) => (
+            <Link
+              key={idx}
+              href={link.href}
+              className="flex items-center space-x-2 border-2 border-purple-500/20 bg-[#1b1c27] p-2 rounded-md hover:bg-purple-700 focus:outline-none"
+            >
+              {link.icon}
+              <span>{link.label}</span>
+            </Link>
+          ))}
         </div>
-
         {/* Right: User Profile */}
         <div className="flex items-center space-x-4">
           <span className="text-sm font-medium p-4">Alysa Myers</span>
@@ -63,6 +69,7 @@ export const Navbar: React.FC = () => {
               alt="user"
               width={32}
               height={32}
+              priority
               className="object-cover"
             />
           </div>
