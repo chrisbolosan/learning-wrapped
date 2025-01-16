@@ -9,6 +9,7 @@ interface CourseCardProps {
   description?: string;
   imageSrc: string;
   isFavorite: boolean;
+  urlSlug: string;
   onToggleFavorite: () => void;
 }
 
@@ -17,11 +18,12 @@ export const CourseCard: React.FC<CourseCardProps> = ({
   description,
   imageSrc,
   isFavorite,
+  urlSlug,
   onToggleFavorite,
 }) => {
   return (
     <div className="bg-[#1a1b26] rounded-lg overflow-hidden border border-blue-900/30 max-w-80 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-      <Link href="/404">
+      <Link href={`/courses/${urlSlug}`}>
         <button className="w-full btn-custom">Open</button>
       </Link>
       <div className="relative">

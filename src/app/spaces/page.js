@@ -20,12 +20,14 @@ const DashboardLayout = () => {
       title: 'Math Playground',
       description: 'Explore math concepts interactively.',
       imageSrc: '/math_playground.png',
+      urlSlug: 'math',
     },
     {
       id: 2,
       title: 'Science Lab',
       description: 'Discover the wonders of science experiments.',
       imageSrc: '/science_lab.png',
+      urlSlug: 'science',
     },
   ];
   const initialActivities = [
