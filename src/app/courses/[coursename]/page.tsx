@@ -2,34 +2,28 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
-import { Navbar } from '../../components/Navigationbar';
+import { CourseNotFound } from '../../components/CourseNotFound';
 import { ArrowLeft, Star, Share2, Rocket, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { courseData } from '../../courses/data';
 
-export default function CoursePage<>() {
+// Define the shape of the course data
+interface Course {
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+}
+
+const courseDataTyped: Record<string, Course> = courseData;
+
+export default function CoursePage() {
   const pathname = usePathname();
-  const courseName = pathname.split('/').pop();
-  const course = courseData[courseName];
+  const courseName = pathname?.split('/').pop() || '';
+  const course = courseDataTyped[courseName];
 
   if (!course) {
-    return (
-      <div className="min-h-screen bg-gray-900 text-gray-100 p-4">
-        <Navbar />
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-3xl font-bold">Course Not Found</h1>
-          <p className="mt-4 text-gray-400">
-            We couldn't find the course you're looking for.
-          </p>
-          <Link
-            href="/spaces"
-            className="text-purple-500 hover:underline mt-6 block"
-          >
-            Go Back to All Courses
-          </Link>
-        </div>
-      </div>
-    );
+    return <CourseNotFound />;
   }
 
   return (
@@ -63,7 +57,6 @@ export default function CoursePage<>() {
               {/* <button className="flex items-center justify-between w-full text-left mb-4">
                 <span className="text-lg font-medium">More Options</span>
               </button> */}
-
               <div className="space-y-4">
                 <div>
                   <label className="block text-gray-400 mb-2">
@@ -109,9 +102,7 @@ export default function CoursePage<>() {
               </button>
             </div>
 
-            <div className="flex-1 bg-gray-900/50 min-h-[500px]">
-              {/* preview logic lorem ipsum logic */}
-            </div>
+            <div className="flex-1 bg-gray-900/50 min-h-[500px]"></div>
 
             <div className="border-t border-gray-700 p-4 flex items-center gap-4">
               <button className="flex items-center gap-2 px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors">
