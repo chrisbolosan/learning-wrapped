@@ -29,6 +29,7 @@ export default function CoursePage() {
       subtitle={course.subtitle}
       description={course.description}
       image={course.image}
+      courseName={course}
     />
   );
 }
