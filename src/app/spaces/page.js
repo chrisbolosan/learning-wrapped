@@ -5,93 +5,12 @@ import { CourseCard } from '../components/Coursecard';
 import { ActivityCard } from '../components/Activitycard';
 import { CreatorCard } from '../components/Creatorcard';
 import { Searchbar } from '../components/Searchbar';
+import data from './data';
 
 const DashboardLayout = () => {
-  const creators = [
-    { name: 'John', imageSrc: '/john.png' },
-    { name: 'Morgan', imageSrc: '/morgan.png' },
-    { name: 'Corey', imageSrc: '/corey.png' },
-    { name: 'Paul', imageSrc: '/paul.png' },
-  ];
-  const initialCourses = [
-    {
-      id: 1,
-      title: 'Math Playground',
-      description: 'Explore math concepts interactively.',
-      imageSrc: '/math_playground.png',
-      urlSlug: 'math',
-    },
-    {
-      id: 2,
-      title: 'Science Lab',
-      description: 'Discover the wonders of science experiments.',
-      imageSrc: '/space.jpg',
-      urlSlug: 'science',
-    },
-  ];
-  const initialActivities = [
-    {
-      id: 3,
-      title: 'Class Sidekick',
-      icon: (
-        <svg
-          className="w-6 h-6 text-purple-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: 4,
-      title: 'Pulse: Bellringer',
-      icon: (
-        <svg
-          className="w-6 h-6 text-purple-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15.536 8.464a5 5 0 010 7.072M12 18c-3.313 0-6-2.687-6-6s2.687-6 6-6 6 2.687 6 6-2.687 6-6 6z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: 5,
-      title: 'Pulse: Exit Ticket',
-      icon: (
-        <svg
-          className="w-6 h-6 text-purple-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-          />
-        </svg>
-      ),
-    },
-  ];
-
   const [favorites, setFavorites] = useState([]);
-  const [courseData] = useState(initialCourses);
-  const [activities] = useState(initialActivities);
+  const [courseData] = useState(data.initialCourses);
+  const [activities] = useState(data.initialActivities);
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleToggleFavorite = (item, type) => {
@@ -218,7 +137,7 @@ const DashboardLayout = () => {
           <div className="flex-1 h-px bg-gray-800 ml-4" />
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {creators.map((creator, index) => (
+          {data.creators.map((creator, index) => (
             <CreatorCard key={index} {...creator} />
           ))}
         </div>
