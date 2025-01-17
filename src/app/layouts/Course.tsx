@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Star, Share2, Plus, Rocket } from 'lucide-react';
+import {
+  ArrowLeft,
+  // Star,
+  // Share2,
+  //  Plus,
+  Rocket,
+} from 'lucide-react';
 import Link from 'next/link';
 
 interface CourseProps {
@@ -60,7 +66,9 @@ export const Course: React.FC<CourseProps> = ({
       setLoading(false);
     }
   };
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (
+    e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleChat();
@@ -84,7 +92,6 @@ export const Course: React.FC<CourseProps> = ({
                   src={image}
                   alt={title}
                   className="w-full h-full object-cover"
-                  onChange={(e) => setAudienceInput(e.target.value)}
                 />
               </div>
               <div>
