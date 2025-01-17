@@ -25,7 +25,7 @@ const DashboardLayout = () => {
       id: 2,
       title: 'Science Lab',
       description: 'Discover the wonders of science experiments.',
-      imageSrc: '/science_lab.png',
+      imageSrc: '/space.jpg',
       urlSlug: 'science',
     },
   ];
