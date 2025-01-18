@@ -9,7 +9,7 @@ const teacherData = {
   coursesTaught: ['Math 101', 'Science 202', 'History 303'],
   papersGraded: 200,
   currentSchedule: {
-    Monday: 'Math 101 (9:00-11:00 AM)',
+    Monday: 'Math 001 (9:00-11:00 AM)',
     Wednesday: 'Science 202 (10:00-12:00 PM)',
     Friday: 'History 303 (1:00-3:00 PM)',
   },
