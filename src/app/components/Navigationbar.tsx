@@ -44,11 +44,11 @@ export const Navbar: React.FC = () => {
               icon: <AppsIcon fontSize="small" />,
               label: 'Spaces',
             },
-            {
-              href: '/404',
-              icon: <HistoryIcon fontSize="small" />,
-              label: 'History',
-            },
+            // {
+            //   href: '/404',
+            //   icon: <HistoryIcon fontSize="small" />,
+            //   label: 'History',
+            // },
           ].map((link, idx) => (
             <Link
               key={idx}
