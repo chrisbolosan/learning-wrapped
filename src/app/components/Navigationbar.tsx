@@ -6,7 +6,7 @@ import Image from 'next/image';
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
 import AppsIcon from '@mui/icons-material/Apps';
-import HistoryIcon from '@mui/icons-material/History';
+// import HistoryIcon from '@mui/icons-material/History';
 
 export const Navbar: React.FC = () => {
   return (
