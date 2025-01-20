@@ -8,6 +8,10 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { validateCourseInputs } from '@utilscripts/Validations';
+import {
+  generateFullPromptCourse,
+  fetchChatResponse,
+} from '@utilprompts/Prompts';
 
 interface CourseProps {
   courseName: string;
@@ -48,31 +52,39 @@ export const Course: React.FC<CourseProps> = ({
     setLoading(true);
     setResponse('');
 
-    const fullPrompt = `
-      You are assisting a teacher or student with the following data:
-      - Course: ${courseName}
-      - Audience Description: ${audienceInput}
-      - Session Description Instructions: ${sessionInput}
+    const fullPrompt = generateFullPromptCourse(
+      courseName,
+      audienceInput,
+      sessionInput,
+      userInput
+    );
 
-      Question: ${userInput}
-    `;
+    await fetchChatResponse(fullPrompt, setResponse, setLoading);
+    // const fullPrompt = `
+    //   You are assisting a teacher or student with the following data:
+    //   - Course: ${courseName}
+    //   - Audience Description: ${audienceInput}
+    //   - Session Description Instructions: ${sessionInput}
 
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: fullPrompt }),
-      });
+    //   Question: ${userInput}
+    // `;
 
-      const data = await res.json();
-      setResponse(data.message);
-    } catch {
-      setResponse('Error: Unable to fetch response from the chatbot.');
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   const res = await fetch('/api/chat', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ prompt: fullPrompt }),
+    //   });
+
+    //   const data = await res.json();
+    //   setResponse(data.message);
+    // } catch {
+    //   setResponse('Error: Unable to fetch response from the chatbot.');
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const handleKeyPress = (
