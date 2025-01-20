@@ -6,6 +6,7 @@ import {
   //  Plus,
   Rocket,
 } from 'lucide-react';
+
 import Link from 'next/link';
 
 interface CourseProps {
@@ -14,9 +15,6 @@ interface CourseProps {
   title: string;
   description: string;
   subtitle: string;
-  audienceInput?: string;
-  sessionInput?: string;
-  userInput?: string;
 }
 
 export const Course: React.FC<CourseProps> = ({
@@ -31,20 +29,41 @@ export const Course: React.FC<CourseProps> = ({
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState('');
+  const [error, setError] = useState({
+    sessionInput: '',
+    audienceInput: '',
+  });
+
+  const validateInputs = () => {
+    const errors: {
+      sessionInput: string;
+      audienceInput: string;
+    } = {
+      sessionInput: '',
+      audienceInput: '',
+    };
+
+    if (!sessionInput.trim())
+      errors.sessionInput = 'Please describe the session instructions.';
+    if (!audienceInput.trim())
+      errors.audienceInput = 'Please specify the audience details.';
+
+    setError(errors);
+
+    return !Object.values(errors).some((error) => error);
+  };
 
   const handleChat = async () => {
-    // if (!userInput.trim()) return;
+    if (!validateInputs()) return;
 
     setLoading(true);
     setResponse('');
 
     const fullPrompt = `
-      You are assisting a teacher with the following data:
-      - Name: 'Jane Doe'
-      - Hours Taught: 120
+      You are assisting a teacher or student with the following data:
       - Course: ${courseName}
       - Audience Description: ${audienceInput}
-      -Session Description Iånstructions: ${audienceInput}
+      - Session Description Instructions: ${sessionInput}
 
       Question: ${userInput}
     `;
@@ -66,6 +85,7 @@ export const Course: React.FC<CourseProps> = ({
       setLoading(false);
     }
   };
+
   const handleKeyPress = (
     e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
@@ -99,40 +119,44 @@ export const Course: React.FC<CourseProps> = ({
                 <p className="text-gray-400">{subtitle}</p>
               </div>
             </div>
-
             <p className="text-gray-300 mb-8">{description}</p>
 
-            <div className="bg-gray-800/70 rounded-lg p-4 mb-6">
-              <button className="flex items-center justify-between w-full text-left mb-4">
-                <span className="text-lg font-medium">More Options</span>
-              </button>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-gray-400 mb-2">
-                    Audience Description
-                  </label>
-                  <textarea
-                    className="w-full bg-gray-700/50 rounded-lg p-3 text-gray-300 placeholder-gray-500"
-                    placeholder="Describe the target audience. Give as much detail as you'd like to better adapt the exercise to your audience."
-                    rows={4}
-                    value={audienceInput}
-                    onChange={(e) => setAudienceInput(e.target.value)}
-                    onKeyDown={handleKeyPress}
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-400 mb-2">
-                    Session Instructions
-                  </label>
-                  <textarea
-                    className="w-full bg-gray-700/50 rounded-lg p-3 text-gray-300 placeholder-gray-500"
-                    placeholder="Describe any specific session instructions that can be applied before sharing with students."
-                    rows={4}
-                    value={sessionInput}
-                    onChange={(e) => setSessionInput(e.target.value)}
-                    onKeyDown={handleKeyPress}
-                  />
-                </div>
+            <div className="bg-gray-800/70 rounded-lg p-4 mb-6 space-y-4">
+              <div>
+                <label className="block text-gray-400 mb-2">
+                  Audience Description
+                </label>
+                <textarea
+                  className="w-full bg-gray-700/50 rounded-lg p-3 text-gray-300 placeholder-gray-500"
+                  placeholder="Describe the target audience."
+                  rows={4}
+                  value={audienceInput}
+                  onChange={(e) => setAudienceInput(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                />
+                {error.audienceInput && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {error.audienceInput}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-gray-400 mb-2">
+                  Session Instructions
+                </label>
+                <textarea
+                  className="w-full bg-gray-700/50 rounded-lg p-3 text-gray-300 placeholder-gray-500"
+                  placeholder="Describe session instructions."
+                  rows={4}
+                  value={sessionInput}
+                  onChange={(e) => setSessionInput(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                />
+                {error.sessionInput && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {error.sessionInput}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -156,16 +180,16 @@ export const Course: React.FC<CourseProps> = ({
           <div className="bg-gray-800/50 rounded-xl flex flex-col">
             <div className="p-4 flex justify-between items-center border-b border-gray-700">
               <h2 className="text-xl font-semibold">Preview</h2>
-              <button className="p-2 hover:bg-gray-700/50 rounded-full transition-colors">
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-400">AI-Enhanced</span>
                 <Rocket className="w-5 h-5" />
-              </button>
+              </div>
             </div>
             {loading && (
               <div className="text-center text-sm text-gray-500">
                 Thinking...
               </div>
             )}
-
             {response && (
               <div className="rounded-lg bg-gray-50 p-4">
                 <h3 className="mb-2 font-semibold text-gray-700">Response:</h3>
@@ -178,6 +202,7 @@ export const Course: React.FC<CourseProps> = ({
                 className="flex items-center gap-2 px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
                 onClick={handleChat}
               >
+                {' '}
                 {/* <Plus className="w-4 h-4" /> */}
                 Send
               </button>
