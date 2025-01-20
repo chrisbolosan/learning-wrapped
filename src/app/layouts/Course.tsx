@@ -6,8 +6,8 @@ import {
   //  Plus,
   Rocket,
 } from 'lucide-react';
-
 import Link from 'next/link';
+import { validateCourseInputs } from '@utilscripts/Validations';
 
 interface CourseProps {
   courseName: string;
@@ -34,27 +34,16 @@ export const Course: React.FC<CourseProps> = ({
     audienceInput: '',
   });
 
-  const validateInputs = () => {
-    const errors: {
-      sessionInput: string;
-      audienceInput: string;
-    } = {
-      sessionInput: '',
-      audienceInput: '',
-    };
-
-    if (!sessionInput.trim())
-      errors.sessionInput = 'Please describe the session instructions.';
-    if (!audienceInput.trim())
-      errors.audienceInput = 'Please specify the audience details.';
-
-    setError(errors);
-
-    return !Object.values(errors).some((error) => error);
-  };
-
   const handleChat = async () => {
-    if (!validateInputs()) return;
+    const { isValid, errors } = validateCourseInputs({
+      sessionInput,
+      audienceInput,
+    });
+
+    if (!isValid) {
+      setError(errors);
+      return;
+    }
 
     setLoading(true);
     setResponse('');
