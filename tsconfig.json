@@ -20,7 +20,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@utilscripts/*": ["./libs/util/scripts/*"]
+      "@utilscripts/*": ["./libs/util/scripts/*"],
+      "@utilprompts/*": ["./libs/util/prompts/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
