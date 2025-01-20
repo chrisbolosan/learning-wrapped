@@ -39,15 +39,17 @@ export const Course: React.FC<CourseProps> = ({
   });
 
   const handleChat = async () => {
-    const { isValid, errors } = validateCourseInputs({
-      sessionInput,
-      audienceInput,
-    });
+    const validation = validateCourseInputs({ sessionInput, audienceInput });
 
-    if (!isValid) {
-      setError(errors);
+    if (!validation.isValid) {
+      setError(validation.errors);
       return;
     }
+
+    setError({
+      sessionInput: '',
+      audienceInput: '',
+    });
 
     setLoading(true);
     setResponse('');
@@ -60,31 +62,6 @@ export const Course: React.FC<CourseProps> = ({
     );
 
     await fetchChatResponse(fullPrompt, setResponse, setLoading);
-    // const fullPrompt = `
-    //   You are assisting a teacher or student with the following data:
-    //   - Course: ${courseName}
-    //   - Audience Description: ${audienceInput}
-    //   - Session Description Instructions: ${sessionInput}
-
-    //   Question: ${userInput}
-    // `;
-
-    // try {
-    //   const res = await fetch('/api/chat', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ prompt: fullPrompt }),
-    //   });
-
-    //   const data = await res.json();
-    //   setResponse(data.message);
-    // } catch {
-    //   setResponse('Error: Unable to fetch response from the chatbot.');
-    // } finally {
-    //   setLoading(false);
-    // }
   };
 
   const handleKeyPress = (
