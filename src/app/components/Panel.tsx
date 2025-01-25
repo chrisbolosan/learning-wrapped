@@ -71,17 +71,6 @@ const TeacherPanel: React.FC<TeacherPanelProps> = ({
     onDataUpdate?.(updatedData);
   };
 
-  const updateCourse = (index: number, newValue: string) => {
-    const updatedCourses = [...teacherData.coursesTaught];
-    updatedCourses[index] = newValue;
-    const updatedData = {
-      ...teacherData,
-      coursesTaught: updatedCourses,
-    };
-    setTeacherData(updatedData);
-    onDataUpdate?.(updatedData);
-  };
-
   const addSchedule = () => {
     const updatedData = {
       ...teacherData,
@@ -111,7 +100,7 @@ const TeacherPanel: React.FC<TeacherPanelProps> = ({
     value: Date | string
   ) => {
     const updatedSchedule = [...teacherData.currentSchedule];
-    updatedSchedule[index][key] = value;
+    (updatedSchedule[index][key] as Date | string) = value;
     const updatedData = {
       ...teacherData,
       currentSchedule: updatedSchedule,
@@ -257,7 +246,9 @@ const TeacherPanel: React.FC<TeacherPanelProps> = ({
                     <div key={index} className="flex flex-col gap-2">
                       <DatePicker
                         selected={entry.date}
-                        onChange={(date) => updateSchedule(index, 'date', date)}
+                        onChange={(date) =>
+                          updateSchedule(index, 'date', date as Date)
+                        }
                         showTimeSelect
                         dateFormat="MMMM d, yyyy h:mm aa"
                         className="rounded-lg bg-orange-50 px-3 py-2 text-sm text-gray-700 border"
