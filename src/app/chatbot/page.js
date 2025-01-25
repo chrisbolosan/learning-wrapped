@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Confetti from 'react-confetti';
-
+import TeacherPanel from '../components/Panelbeta';
 const teacherData = {
   name: 'Jane Doe',
   hoursTaught: 120,
@@ -75,7 +75,6 @@ export default function ChatbotPage() {
   return (
     <div className="min-h-screen bg-[#13141f] p-4 md:p-8">
       <div className="mx-auto max-w-4xl space-y-8">
-        {/* Header */}
         <div className="text-center">
           <h1 className="mb-2 text-3xl font-bold text-white">
             Teacher Management Assistant
@@ -85,8 +84,8 @@ export default function ChatbotPage() {
           </p>
         </div>
 
-        {/* Chat Section */}
         <div className="overflow-hidden rounded-xl bg-white shadow-lg">
+          <TeacherPanel />
           <div className="border-b border-gray-200 p-6">
             <h2 className="text-xl font-semibold text-gray-900">
               Chat with the AI Assistant
@@ -127,7 +126,6 @@ export default function ChatbotPage() {
           </div>
         </div>
 
-        {/* Feedback Section */}
         <div className="overflow-hidden rounded-xl bg-white shadow-lg">
           <div className="border-b border-gray-200 p-6">
             <h2 className="text-xl font-semibold text-gray-900">
