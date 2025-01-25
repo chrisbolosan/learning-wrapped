@@ -1,27 +1,38 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, KeyboardEvent } from 'react';
 import Confetti from 'react-confetti';
-import TeacherPanel from '../components/Panelbeta';
-const teacherData = {
-  name: 'Jane Doe',
-  hoursTaught: 120,
-  coursesTaught: ['Math 101', 'Science 202', 'History 303'],
-  papersGraded: 200,
-  currentSchedule: {
-    Monday: 'Math 101 (9:00-11:00 AM)',
-    Wednesday: 'Science 202 (10:00-12:00 PM)',
-    Friday: 'History 303 (1:00-3:00 PM)',
-  },
-};
+import TeacherPanel from '../components/Panel';
+
+interface TeacherData {
+  name: string;
+  hoursTaught: number;
+  coursesTaught: string[];
+  papersGraded: number;
+  currentSchedule: { date: Date; schedule: string }[];
+}
 
 export default function ChatbotPage() {
-  const [userInput, setUserInput] = useState('');
-  const [response, setResponse] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [feedback, setFeedback] = useState('');
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [teacherData, setTeacherData] = useState<TeacherData>({
+    name: 'Jane Doe',
+    hoursTaught: 120,
+    coursesTaught: ['Math 101', 'Science 202', 'History 303'],
+    papersGraded: 200,
+    currentSchedule: [
+      { date: new Date(), schedule: 'Math 101 (9:00-11:00 AM)' },
+    ],
+  });
+
+  const [userInput, setUserInput] = useState<string>('');
+  const [response, setResponse] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [feedback, setFeedback] = useState<string>('');
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState<boolean>(false);
+  const [showConfetti, setShowConfetti] = useState<boolean>(false);
+
+  const handleTeacherDataUpdate = (updatedData: Partial<TeacherData>) => {
+    setTeacherData((prev) => ({ ...prev, ...updatedData }));
+  };
 
   const handleChat = async () => {
     if (!userInput.trim()) return;
@@ -35,7 +46,14 @@ export default function ChatbotPage() {
       - Hours Taught: ${teacherData.hoursTaught}
       - Courses Taught: ${teacherData.coursesTaught.join(', ')}
       - Papers Graded: ${teacherData.papersGraded}
-      - Schedule: ${JSON.stringify(teacherData.currentSchedule, null, 2)}
+      - Schedule: ${JSON.stringify(
+        teacherData.currentSchedule.map(
+          (schedule) =>
+            `${schedule.schedule} on ${schedule.date.toLocaleDateString()}`
+        ),
+        null,
+        2
+      )}
 
       Question: ${userInput}
     `;
@@ -65,7 +83,7 @@ export default function ChatbotPage() {
     setTimeout(() => setShowConfetti(false), 10000);
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleChat();
@@ -85,7 +103,10 @@ export default function ChatbotPage() {
         </div>
 
         <div className="overflow-hidden rounded-xl bg-white shadow-lg">
-          <TeacherPanel />
+          <TeacherPanel
+            initialData={teacherData}
+            onDataUpdate={handleTeacherDataUpdate}
+          />
           <div className="border-b border-gray-200 p-6">
             <h2 className="text-xl font-semibold text-gray-900">
               Chat with the AI Assistant
