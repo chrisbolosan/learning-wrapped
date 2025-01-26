@@ -12,56 +12,10 @@ import {
   generateFullPromptCourse,
   fetchChatResponse,
 } from '@utilprompts/Prompts';
-import {
-  Page,
-  Text,
-  Document,
-  PDFDownloadLink,
-  StyleSheet,
-  Image,
-} from '@react-pdf/renderer';
-import {
-  JsonView,
-  allExpanded,
-  // darkStyles,
-  defaultStyles,
-} from 'react-json-view-lite';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { JsonView, allExpanded, defaultStyles } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
-const ResponsePdf = ({ response }: { response: string }) => (
-  <Document>
-    <Page style={styles.page}>
-      <Text style={styles.header}></Text>
-      <Image
-        src="/me.webp"
-        alt="watermark"
-        width={100}
-        height={100}
-        className="object-cover"
-        priority
-      />
-      <Text style={styles.content}>{response}</Text>
-    </Page>
-  </Document>
-);
-
-const styles = StyleSheet.create({
-  page: {
-    padding: 30,
-    fontSize: 12,
-  },
-  header: {
-    fontSize: 18,
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  content: {
-    marginTop: 20,
-    textAlign: 'justify',
-  },
-  className: {
-    overflow: 'hidden',
-  },
-});
+import { ResponsePdf } from '../components/ResponsePdf';
 
 interface CourseProps {
   courseName: string;
@@ -189,6 +143,13 @@ export const Course: React.FC<CourseProps> = ({
             </div>
 
             <div className="flex gap-3">
+              {/* <button className="p-2 text-gray-400 hover:text-gray-300 rounded-lg border border-gray-700 hover:border-gray-600 transition-colors">
+                <Star className="w-5 h-5" />
+              </button>
+              <button className="p-2 text-gray-400 hover:text-gray-300 rounded-lg border border-gray-700 hover:border-gray-600 transition-colors">
+                <Share2 className="w-5 h-5" />
+              </button> */}
+
               <button
                 onClick={handleChat}
                 disabled={loading}
@@ -196,18 +157,29 @@ export const Course: React.FC<CourseProps> = ({
               >
                 Launch
               </button>
-              {/* <button className="p-2 text-gray-400 hover:text-gray-300 rounded-lg border border-gray-700 hover:border-gray-600 transition-colors">
-                <Star className="w-5 h-5" />
-              </button>
-              <button className="p-2 text-gray-400 hover:text-gray-300 rounded-lg border border-gray-700 hover:border-gray-600 transition-colors">
-                <Share2 className="w-5 h-5" />
-              </button> */}
+              {response && (
+                <PDFDownloadLink
+                  document={
+                    <ResponsePdf
+                      courseName={courseName}
+                      audienceInput={audienceInput}
+                      sessionInput={sessionInput}
+                      response={response}
+                    />
+                  }
+                  fileName="response.pdf"
+                  className="flex items-center gap-2 px-4 py-2 bg-purple-500 rounded-lg hover:bg-gray-600 transition-colors"
+                >
+                  Download as PDF
+                </PDFDownloadLink>
+              )}
             </div>
           </div>
 
           <div className="bg-gray-800/50 rounded-xl flex flex-col overflow-hidden justify-between">
             <div className="p-4 flex justify-between items-center border-b border-gray-700">
               <h2 className="text-xl font-semibold">Preview</h2>
+
               <div className="flex items-center gap-2">
                 <span className="text-xs text-gray-400">AI-Enhanced</span>
                 <Rocket className="w-5 h-5" />
@@ -219,7 +191,7 @@ export const Course: React.FC<CourseProps> = ({
               </div>
             )}
             {response && (
-              <div className="rounded-lg bg-gray-50 p-4 overflow-y-scroll">
+              <div className="rounded-lg bg-gray-50 p-4 overflow-y-scroll max-h-[600]">
                 <h3 className="mb-2 font-semibold text-gray-700">Response:</h3>
                 {/* <p className="text-gray-600">{response}</p> */}
 
@@ -229,19 +201,7 @@ export const Course: React.FC<CourseProps> = ({
                     shouldExpandNode={allExpanded}
                     style={defaultStyles}
                   />
-                  {/* <JsonView
-                    data={response}
-                    shouldExpandNode={allExpanded}
-                    style={darkStyles}
-                  /> */}
                 </React.Fragment>
-                <PDFDownloadLink
-                  document={<ResponsePdf response={response} />}
-                  fileName="response.pdf"
-                  className="mt-4 inline-block px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
-                >
-                  Download as PDF
-                </PDFDownloadLink>
               </div>
             )}
             <div className="max-h-fit flex-1 bg-gray-900/50"></div>
@@ -254,6 +214,7 @@ export const Course: React.FC<CourseProps> = ({
                 {/* <Plus className="w-4 h-4" /> */}
                 Send
               </button>
+
               <div className="flex-1 relative">
                 <input
                   type="text"
