@@ -12,6 +12,56 @@ import {
   generateFullPromptCourse,
   fetchChatResponse,
 } from '@utilprompts/Prompts';
+import {
+  Page,
+  Text,
+  Document,
+  PDFDownloadLink,
+  StyleSheet,
+  Image,
+} from '@react-pdf/renderer';
+import {
+  JsonView,
+  allExpanded,
+  // darkStyles,
+  defaultStyles,
+} from 'react-json-view-lite';
+import 'react-json-view-lite/dist/index.css';
+const ResponsePdf = ({ response }: { response: string }) => (
+  <Document>
+    <Page style={styles.page}>
+      <Text style={styles.header}></Text>
+      <Image
+        src="/me.webp"
+        alt="watermark"
+        width={100}
+        height={100}
+        className="object-cover"
+        priority
+      />
+      <Text style={styles.content}>{response}</Text>
+    </Page>
+  </Document>
+);
+
+const styles = StyleSheet.create({
+  page: {
+    padding: 30,
+    fontSize: 12,
+  },
+  header: {
+    fontSize: 18,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  content: {
+    marginTop: 20,
+    textAlign: 'justify',
+  },
+  className: {
+    overflow: 'hidden',
+  },
+});
 
 interface CourseProps {
   courseName: string;
@@ -83,7 +133,7 @@ export const Course: React.FC<CourseProps> = ({
           </button>
         </Link>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-gray-800/50 rounded-xl p-6">
+          <div className="bg-gray-800/50 rounded-xl p-6 flex-1 max-h-fit">
             <div className="flex items-start gap-4 mb-6">
               <div className="w-16 h-16 rounded-lg overflow-hidden">
                 <img
@@ -155,7 +205,7 @@ export const Course: React.FC<CourseProps> = ({
             </div>
           </div>
 
-          <div className="bg-gray-800/50 rounded-xl flex flex-col">
+          <div className="bg-gray-800/50 rounded-xl flex flex-col overflow-hidden justify-between">
             <div className="p-4 flex justify-between items-center border-b border-gray-700">
               <h2 className="text-xl font-semibold">Preview</h2>
               <div className="flex items-center gap-2">
@@ -169,12 +219,32 @@ export const Course: React.FC<CourseProps> = ({
               </div>
             )}
             {response && (
-              <div className="rounded-lg bg-gray-50 p-4">
+              <div className="rounded-lg bg-gray-50 p-4 overflow-y-scroll">
                 <h3 className="mb-2 font-semibold text-gray-700">Response:</h3>
-                <p className="text-gray-600">{response}</p>
+                {/* <p className="text-gray-600">{response}</p> */}
+
+                <React.Fragment>
+                  <JsonView
+                    data={response}
+                    shouldExpandNode={allExpanded}
+                    style={defaultStyles}
+                  />
+                  {/* <JsonView
+                    data={response}
+                    shouldExpandNode={allExpanded}
+                    style={darkStyles}
+                  /> */}
+                </React.Fragment>
+                <PDFDownloadLink
+                  document={<ResponsePdf response={response} />}
+                  fileName="response.pdf"
+                  className="mt-4 inline-block px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+                >
+                  Download as PDF
+                </PDFDownloadLink>
               </div>
             )}
-            <div className="flex-1 bg-gray-900/50 min-h-[500px]"></div>
+            <div className="max-h-fit flex-1 bg-gray-900/50"></div>
             <div className="border-t border-gray-700 p-4 flex items-center gap-4">
               <button
                 className="flex items-center gap-2 px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
