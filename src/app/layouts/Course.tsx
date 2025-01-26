@@ -16,6 +16,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import { JsonView, allExpanded, defaultStyles } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 import { ResponsePdf } from '../components/ResponsePdf';
+import { generatePDFFileName } from '@utilscripts/SanitizeFile';
 
 interface CourseProps {
   courseName: string;
@@ -41,6 +42,8 @@ export const Course: React.FC<CourseProps> = ({
     sessionInput: '',
     audienceInput: '',
   });
+
+  const fileName = generatePDFFileName(courseName, audienceInput);
 
   const handleChat = async () => {
     const validation = validateCourseInputs({ sessionInput, audienceInput });
@@ -167,7 +170,7 @@ export const Course: React.FC<CourseProps> = ({
                       response={response}
                     />
                   }
-                  fileName="response.pdf"
+                  fileName={fileName}
                   className="flex items-center gap-2 px-4 py-2 bg-purple-500 rounded-lg hover:bg-gray-600 transition-colors"
                 >
                   Download as PDF
