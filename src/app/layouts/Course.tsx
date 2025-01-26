@@ -194,7 +194,7 @@ export const Course: React.FC<CourseProps> = ({
               </div>
             )}
             {response && (
-              <div className="rounded-lg bg-gray-50 p-4 overflow-y-scroll max-h-[600]">
+              <div className="rounded-lg bg-gray-50 p-4 overflow-y-scroll !max-h-[600px]">
                 <h3 className="mb-2 font-semibold text-gray-700">Response:</h3>
                 {/* <p className="text-gray-600">{response}</p> */}
 
