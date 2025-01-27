@@ -165,7 +165,7 @@ const TeacherPanel: React.FC<TeacherPanelProps> = ({
                     value={teacherData.hoursTaught}
                     onChange={handleChange}
                     placeholder="120"
-                    className="text-2xl font-bold text-gray-900 border rounded p-1"
+                    className="text-2xl font-bold text-gray-900 border rounded p-1 w-full box-border"
                   />
                   <p className="text-sm text-gray-600">Hours Taught</p>
                 </div>
@@ -179,7 +179,7 @@ const TeacherPanel: React.FC<TeacherPanelProps> = ({
                     name="papersGraded"
                     value={teacherData.papersGraded}
                     onChange={handleChange}
-                    className="text-2xl font-bold text-gray-900 border rounded p-1"
+                    className="text-2xl font-bold text-gray-900 border rounded p-1 w-full box-border"
                   />
                   <p className="text-sm text-gray-600">Papers Graded</p>
                 </div>
