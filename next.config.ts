@@ -1,11 +1,16 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  pageExtensions: ['tsx', 'ts', 'jsx', 'js'], // Extensions for your pages
+  experimental: {
+    turbo: {
+      rules: {
+        '*.node': ['*'],
+      },
+    },
+  },
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   trailingSlash: false,
 
-  //security headers
   async headers() {
     return [
       {

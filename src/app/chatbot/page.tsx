@@ -1,5 +1,6 @@
 'use client';
-
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../../libs/firebase/firebaseSetup';
 import React, { useState, KeyboardEvent } from 'react';
 import Confetti from 'react-confetti';
 import TeacherPanel from '../components/Panel';
@@ -76,11 +77,42 @@ export default function ChatbotPage() {
     }
   };
 
-  const handleFeedback = () => {
+  const handleFeedback = async () => {
     if (!feedback.trim()) return;
-    setFeedbackSubmitted(true);
-    setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 10000);
+
+    try {
+      setLoading(true);
+
+      const feedbackRef = collection(db, 'feedback');
+
+      const data = {
+        feedback: feedback.trim(),
+        timestamp: new Date().toISOString(),
+        userId: 'anonymous',
+      };
+
+      let retries = 3;
+      while (retries > 0) {
+        try {
+          await addDoc(feedbackRef, data);
+          setFeedbackSubmitted(true);
+          setShowConfetti(true);
+          setTimeout(() => setShowConfetti(false), 10000);
+          break;
+        } catch (error) {
+          retries--;
+          if (retries === 0) throw error;
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+      }
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      alert(
+        'Failed to submit feedback. Please check your connection and try again.'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
