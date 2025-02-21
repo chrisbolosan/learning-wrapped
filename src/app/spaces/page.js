@@ -35,30 +35,35 @@ const DashboardLayout = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#13141f] text-white p-8 space-y-12">
+    <div className="min-h-screen bg-[#13141f] text-white p-4 md:p-6 lg:p-8 space-y-8 md:space-y-12">
       <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+
       {/* Favorites Section */}
       <section>
         <h2 className="text-lg font-medium mb-4">Favorites</h2>
         {favorites.length === 0 ? (
           <p className="text-gray-400">No favorites added yet.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {favorites.map((fav) =>
               fav.type === 'activity' ? (
-                <ActivityCard
-                  key={fav.id}
-                  {...fav}
-                  isFavorite
-                  onToggleFavorite={() => handleToggleFavorite(fav, 'activity')}
-                />
+                <div className="h-full" key={fav.id}>
+                  <ActivityCard
+                    {...fav}
+                    isFavorite
+                    onToggleFavorite={() =>
+                      handleToggleFavorite(fav, 'activity')
+                    }
+                  />
+                </div>
               ) : (
-                <CourseCard
-                  key={fav.id}
-                  {...fav}
-                  isFavorite
-                  onToggleFavorite={() => handleToggleFavorite(fav, 'course')}
-                />
+                <div className="h-full" key={fav.id}>
+                  <CourseCard
+                    {...fav}
+                    isFavorite
+                    onToggleFavorite={() => handleToggleFavorite(fav, 'course')}
+                  />
+                </div>
               )
             )}
           </div>
@@ -71,8 +76,7 @@ const DashboardLayout = () => {
           <h2 className="text-lg font-medium">Popular Now</h2>
           <div className="flex-1 h-px bg-gray-800 ml-4" />
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredCourses.map((course) => (
             <CourseCard
               key={course.id}
@@ -86,14 +90,12 @@ const DashboardLayout = () => {
         </div>
       </section>
 
-      {/* Common Activities */}
       <section>
         <div className="flex items-center mb-4">
           <h2 className="text-lg font-medium">Common Activities</h2>
           <div className="flex-1 h-px bg-gray-800 ml-4" />
         </div>
-        <h2 className="text-lg font-medium mb-4"> </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
           {filteredActivities.map((activity) => (
             <ActivityCard
               key={activity.id}
@@ -109,58 +111,61 @@ const DashboardLayout = () => {
         </div>
       </section>
 
-      {/* Recently Accessed */}
-      <section>
-        <div className="flex items-center mb-4">
-          <h2 className="text-lg font-medium">Recently Accessed</h2>
-          <div className="flex-1 h-px bg-gray-800 ml-4" />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {filteredCourses.map((course) => (
-            <CourseCard
-              key={course.id}
-              {...course}
-              isFavorite={favorites.some(
-                (fav) => fav.id === course.id && fav.type === 'course'
-              )}
-              onToggleFavorite={() => handleToggleFavorite(course, 'course')}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Featured Creators */}
       <section>
         <div className="flex items-center mb-4">
           <h2 className="text-lg font-medium">Featured Creators</h2>
           <div className="flex-1 h-px bg-gray-800 ml-4" />
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
           {data.creators.map((creator, index) => (
             <CreatorCard key={index} {...creator} />
           ))}
         </div>
       </section>
 
-      {/* Subject-Specific */}
       <section>
-        <div className="flex items-center mb-4">
-          <h2 className="text-lg font-medium">Subject-Specific</h2>
-          <div className="flex-1 h-px bg-gray-800 ml-4" />
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div>
+            <div className="flex items-center mb-4">
+              <h2 className="text-lg font-medium">Recently Accessed</h2>
+              <div className="flex-1 h-px bg-gray-800 ml-4" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {filteredCourses.slice(0, 4).map((course) => (
+                <CourseCard
+                  key={course.id}
+                  {...course}
+                  isFavorite={favorites.some(
+                    (fav) => fav.id === course.id && fav.type === 'course'
+                  )}
+                  onToggleFavorite={() =>
+                    handleToggleFavorite(course, 'course')
+                  }
+                />
+              ))}
+            </div>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {filteredCourses.map((course) => (
-            <CourseCard
-              key={course.id}
-              {...course}
-              isFavorite={favorites.some(
-                (fav) => fav.id === course.id && fav.type === 'course'
-              )}
-              onToggleFavorite={() => handleToggleFavorite(course, 'course')}
-            />
-          ))}
+          <div>
+            <div className="flex items-center mb-4">
+              <h2 className="text-lg font-medium">Subject-Specific</h2>
+              <div className="flex-1 h-px bg-gray-800 ml-4" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {filteredCourses.slice(0, 4).map((course) => (
+                <CourseCard
+                  key={course.id}
+                  {...course}
+                  isFavorite={favorites.some(
+                    (fav) => fav.id === course.id && fav.type === 'course'
+                  )}
+                  onToggleFavorite={() =>
+                    handleToggleFavorite(course, 'course')
+                  }
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     </div>

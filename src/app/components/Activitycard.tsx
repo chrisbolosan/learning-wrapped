@@ -14,11 +14,11 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   onToggleFavorite,
 }) => {
   return (
-    <div className="bg-[#1a1b26] rounded-lg border-2 border-purple-500/20 p-6 flex flex-col items-center justify-center relative transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-      <div className="absolute top-2 right-2">
+    <div className="bg-[#1a1b26] rounded-lg border border-purple-500/20 h-full">
+      <div className="p-4 flex flex-col items-center justify-center relative min-h-[200px]">
         <button
           onClick={onToggleFavorite}
-          className="text-purple-400 hover:scale-110 transition-transform"
+          className="absolute top-3 right-3 text-white hover:scale-110 transition-transform"
         >
           <svg
             className="w-5 h-5"
@@ -34,13 +34,15 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
             />
           </svg>
         </button>
+        <Link href="/404" className="flex flex-col items-center">
+          <div className="w-16 h-16 rounded-full bg-purple-500/20 flex items-center justify-center mb-4">
+            {icon}
+          </div>
+          <h3 className="text-white text-lg font-medium text-center">
+            {title}
+          </h3>
+        </Link>
       </div>
-      <Link href="/404">
-        <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center mb-3 mx-auto">
-          {icon}
-        </div>
-        <span className="text-white text-center">{title}</span>
-      </Link>
     </div>
   );
 };
