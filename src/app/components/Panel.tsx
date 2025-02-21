@@ -23,6 +23,7 @@ interface TeacherData {
 interface TeacherPanelProps {
   initialData?: TeacherData;
   onDataUpdate?: (data: Partial<TeacherData>) => void;
+  children?: React.ReactNode;
 }
 
 const TeacherPanel: React.FC<TeacherPanelProps> = ({

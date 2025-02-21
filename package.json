@@ -21,7 +21,7 @@
     "@mui/x-date-pickers": "^7.23.6",
     "@react-pdf/renderer": "^4.1.6",
     "canvasjs": "^1.8.3",
-    "chart.js": "^4.4.7",
+    "chart.js": "^4.4.8",
     "firebase": "^11.2.0",
     "lucide-react": "^0.471.1",
     "next": "15.1.4",

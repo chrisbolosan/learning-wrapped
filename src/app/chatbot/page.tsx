@@ -4,6 +4,7 @@ import { db } from '../../../libs/firebase/firebaseSetup';
 import React, { useState, KeyboardEvent } from 'react';
 import Confetti from 'react-confetti';
 import TeacherPanel from '../components/Panel';
+import Link from 'next/link';
 
 interface TeacherData {
   name: string;
@@ -125,13 +126,21 @@ export default function ChatbotPage() {
   return (
     <div className="min-h-screen bg-[#13141f] p-4 md:p-8">
       <div className="mx-auto max-w-4xl space-y-8">
-        <div className="text-center">
-          <h1 className="mb-2 text-3xl font-bold text-white">
-            Teacher Management Assistant
-          </h1>
-          <p className="text-white">
-            Get instant insights about your teaching stats, schedule, and work
-          </p>
+        <div className="flex justify-between items-center">
+          <div className="text-center">
+            <h1 className="mb-2 text-3xl font-bold text-white">
+              Teacher Management Assistant
+            </h1>
+            <p className="text-white">
+              Get instant insights about your teaching stats, schedule, and work
+            </p>
+          </div>
+          <Link
+            href="/dashboard"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            View Dashboard
+          </Link>
         </div>
 
         <div className="overflow-hidden rounded-xl bg-white shadow-lg">
