@@ -60,12 +60,17 @@ def chatbot_response(prompt):
 
             # Calculate total hours across all semesters for the course
             total_hours = 0
+            found_course = False #Flag to check if course exist
             for course, semesters in teacher_data['semester_data'].items(): # iterate through the main `semester_data` structure
               if course.lower() == course_name: #If the right course is found, iterate through semesters
+                found_course = True #Found course name
                 for semester, data in semesters.items(): #Iterate through semester
                   weeks_taught = data.get("weeks_taught", 0)
                   hours_per_week = data.get("hours_per_week", 0)
                   total_hours += weeks_taught * hours_per_week
+                break #Exit after finding the course
+            if not found_course: #If course does not exist
+                return f"Course '{course_name}' not found in the teacher's data."
 
             if total_hours > 0:
                 return f"{teacher_data['name']} taught {course_name} for a total of {total_hours} hours."
