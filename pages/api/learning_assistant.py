@@ -34,28 +34,23 @@ teacher_data = {
     }
 }
 
-# Function to get hours taught this week
 def get_hours_taught_this_week(course_name):
     current_week = datetime.now().isocalendar()[1]  # Get current week of the year
-    fall_semester_weeks = 12  # Define the number of weeks for Fall 2024
 
-    print(f"[DEBUG] Current week: {current_week}")  # Debugging statement
+    week_data = teacher_data['courses_taught'].get(course_name)
 
-    course_data = teacher_data['courses_taught'].get(course_name)
-    if course_data:
-        semester_data = course_data.get('semester_data', {}).get('fall_2024', {})
+    if week_data:
+        semester_data = week_data.get('semester_data', {}).get('fall_2024', {})
         weeks_taught = semester_data.get('weeks_taught', 0)
         hours_per_week = semester_data.get('hours_per_week', 0)
 
-        print(f"[DEBUG] {course_name} Weeks Taught: {weeks_taught}, Hours per Week: {hours_per_week}")  # Debugging
-
-        # Check if the current week falls within the teaching period
-        if 1 <= current_week <= fall_semester_weeks:
+        # Check if the course is being taught this week
+        if current_week <= weeks_taught:
             return f"{hours_per_week} hours were taught this week in {course_name}."
         else:
-            return f"[DEBUG] {course_name} is not being taught this week."
-    
-    return "[DEBUG] Course not found."
+            return "No data for this week."
+    return "Course not found."
+
 
 # Function to handle chatbot response
 def chatbot_response(prompt):
