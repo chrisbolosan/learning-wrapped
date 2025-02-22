@@ -2,6 +2,10 @@
 
 import React, { useState } from 'react';
 import Confetti from 'react-confetti';
+import Panel from '../components/Panel';
+
+
+
 
 const teacherData = {
   name: 'Jane Doe',
@@ -74,6 +78,7 @@ export default function ChatbotPage() {
 
   return (
     <div className="min-h-screen bg-[#13141f] p-4 md:p-8">
+      <Panel/>
       <div className="mx-auto max-w-4xl space-y-8">
         {/* Header */}
         <div className="text-center">
