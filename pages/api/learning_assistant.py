@@ -37,26 +37,30 @@ teacher_data = {
 # Function to get hours taught this week
 def get_hours_taught_this_week(course_name):
     current_week = datetime.now().isocalendar()[1]  # Get current week of the year
-    fall_semester_weeks = 12  # Defined semester duration for Fall 2024
+    fall_semester_weeks = 12  # Define the number of weeks for Fall 2024
+
+    print(f"[DEBUG] Current week: {current_week}")  # Debugging statement
 
     course_data = teacher_data['courses_taught'].get(course_name)
-
     if course_data:
         semester_data = course_data.get('semester_data', {}).get('fall_2024', {})
         weeks_taught = semester_data.get('weeks_taught', 0)
         hours_per_week = semester_data.get('hours_per_week', 0)
 
+        print(f"[DEBUG] {course_name} Weeks Taught: {weeks_taught}, Hours per Week: {hours_per_week}")  # Debugging
+
         # Check if the current week falls within the teaching period
         if 1 <= current_week <= fall_semester_weeks:
             return f"{hours_per_week} hours were taught this week in {course_name}."
         else:
-            return f"{course_name} is not being taught this week."
+            return f"[DEBUG] {course_name} is not being taught this week."
     
-    return "Course not found."
+    return "[DEBUG] Course not found."
 
 # Function to handle chatbot response
 def chatbot_response(prompt):
     prompt_lower = prompt.lower()
+    print(f"[DEBUG] Received prompt: {prompt_lower}")  # Debugging statement
 
     if "math 101" in prompt_lower and "this week" in prompt_lower:
         return get_hours_taught_this_week("Math 101")
@@ -65,10 +69,10 @@ def chatbot_response(prompt):
     elif "history 303" in prompt_lower and "this week" in prompt_lower:
         return get_hours_taught_this_week("History 303")
     else:
-        return "Sorry, I don't have enough information to answer that."
+        return "[DEBUG] Sorry, I don't have enough information to answer that."
 
 # Example usage
 if __name__ == "__main__":
-    question = "How many hours were taught this week in Math 101?"
+    question = "How many hours were taught for Math 101 this week?"
     response = chatbot_response(question)
     print(response)
