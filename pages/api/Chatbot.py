@@ -33,12 +33,11 @@ teacher_data = {
                 "weeks_taught": 12,  # Total weeks taught in Fall 2024
                 "hours_per_week": 6,  # Number of hours per week for Math 101
                 "days": ["Monday", "Wednesday", "Friday"]  # Taught on these days
-                },
-                "spring_2024": {
-                    "weeks_taught": 10,
-                    "hours_per_week": 4,
-                    "days": ["Tuesday", "Thursday"]
-                }
+            },
+            "spring_2024": {
+                "weeks_taught": 10,
+                "hours_per_week": 4,
+                "days": ["Tuesday", "Thursday"]
             }
         },
         "Science 202": {
