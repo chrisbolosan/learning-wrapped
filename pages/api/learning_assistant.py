@@ -88,3 +88,21 @@ def get_hours_taught_this_week(course_name, semester="fall_2024", current_date=N
         return f"{hours_per_week} hours were taught this week in {course_name}."
     else:
         return "No data for this week."
+
+# Function to handle chatbot response
+def chatbot_response(prompt):
+    prompt_lower = prompt.lower()
+    print(f"[DEBUG] Received prompt: {prompt_lower}")  # Debugging statement
+
+    if "math 101" in prompt_lower and "this week" in prompt_lower:
+        return get_hours_taught_this_week("Math 101")
+    elif "science 202" in prompt_lower and "this week" in prompt_lower:
+        return get_hours_taught_this_week("Science 202")
+    elif "history 303" in prompt_lower and "this week" in prompt_lower:
+        return get_hours_taught_this_week("History 303")
+    else:
+        try: #LLM for non-definitive prompts
+            response = model.generate_content(f"Answer the following question about Jane Doe. {prompt}")
+            return response.text
+        except Exception as e:
+            return f"Could not answer from internal data or using the LLM.  Error: {e}"
