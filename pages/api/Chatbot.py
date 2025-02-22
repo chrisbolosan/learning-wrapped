@@ -1,7 +1,6 @@
 ## GasMan
 ## Jan. 12,2025
 
-from datetime import datetime
 import google.generativeai as genai
 import streamlit as st
 import os
@@ -62,54 +61,24 @@ teacher_data = {
     }
 }
 
-def get_hours_taught_this_week(course_name, semester="fall_2024", current_date=None):
-    """
-    Calculates hours taught this week for a given course and semester.
-
-    Args:
-        course_name (str): Name of the course.
-        semester (str):  The semester to look up. Defaults to "fall_2024"
-        current_date (datetime, optional):  Date to use for calculating the current week.
-                                           Defaults to datetime.now() for testing purposes
-
-    Returns:
-        str: A string indicating the hours taught this week, or an error message.
-    """
-    if current_date is None:
-        current_date = datetime.now()
-
-    current_week = current_date.isocalendar()[1]  # Get current week of the year
-
-    week_data = teacher_data['courses_taught'].get(course_name, {})
-    if not week_data:
-        return f"Course {course_name} not found."
-
-    semester_data = week_data.get('semester_data', {}).get(semester, {})
-    if not semester_data:
-        return f"No data for {course_name} in {semester}."
-
-    weeks_taught = semester_data.get('weeks_taught', 0)
-    hours_per_week = semester_data.get('hours_per_week', 0)
-
-    # Check if the course is being taught this week
-    if current_week <= weeks_taught:
-        return f"{hours_per_week} hours were taught this week in {course_name}."
-    else:
-        return "No data for this week."
-
 # Function to handle chatbot response
 def chatbot_response(prompt):
     prompt_lower = prompt.lower()
     print(f"[DEBUG] Received prompt: {prompt_lower}")  # Debugging statement
 
-    # Local Data:  Regex with
-    match_hours = re.search(r"(?:how many|what is the total|can you tell me the|how much) (?:hours|time) (?:were taught|did the instructor teach|was spent teaching|instruction time was given) (?:in|for|of)? ?([a-z\s\d]+)", prompt_lower)
-    match_week = re.search(r"how long was ([a-z\s\d]+) taught this week\?", prompt_lower)
-
-    # Prompt the LLM with some additional checks
+    # First, check for the LLM prompts before going to local data
     match_courses = re.search(r"what (courses|subjects|classes) (does|is) (jane doe|the instructor)(.*)", prompt_lower)
     match_schedule = re.search(r"what (is|times|are) (jane doe|the instructor)(.*)(schedule|timetable|teaching hours|work hours|teaching calendar)", prompt_lower)
-    
+
+    if match_courses or match_schedule: # LLM for the prompts
+        try:
+            response = model.generate_content(f"Answer the following question about Jane Doe: {prompt}")
+            return response.text
+        except Exception as e:
+            return f"Could not answer from internal data or using the LLM. Error: {e}"
+
+    # Local Data:  Regex with
+    match_hours = re.search(r"(?:how many|what is the total|can you tell me the|how much) (?:hours|time) (?:were taught|did the instructor teach|was spent teaching|instruction time was given) (?:in|for|of)? ?([a-z\s\d]+)", prompt_lower)
 
     if match_hours:
         course = match_hours.group(1).strip()
@@ -122,24 +91,8 @@ def chatbot_response(prompt):
             return f"Jane Doe has taught {total_hours} hours in {course}."
         else:
             return f"No data available for {course}."
-
-    elif match_week:
-        course = match_week.group(1).strip()
-        return get_hours_taught_this_week(course)
-    
-    elif match_courses or match_schedule: # LLM for the other prompts
-        try:
-            response = model.generate_content(f"Answer the following question about Jane Doe: {prompt}")
-            return response.text
-        except Exception as e:
-            return f"Could not answer from internal data or using the LLM. Error: {e}"
-
     else:
-        try: #LLM for non-definitive prompts
-            response = model.generate_content(f"Answer the following question about Jane Doe. {prompt}")
-            return response.text
-        except Exception as e:
-            return f"Could not answer from internal data or using the LLM.  Error: {e}"
+        return "I'm sorry. This information is not available"
 
 # Streamlit setup
 st.set_page_config(page_title="Teacher Chatbot", layout="wide")
