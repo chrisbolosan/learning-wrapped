@@ -4,7 +4,7 @@
 
 from openai import OpenAI
 
-client = OpenAI(api_key="your_openai_api_key_here")
+client = OpenAI(api_key="AIzaSyDgrkFbxro878Xwm3vBRvbdCZ2bkVFljM8")
 import streamlit as st
 
 # Set up OpenAI API key
