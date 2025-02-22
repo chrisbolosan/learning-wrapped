@@ -1,13 +1,24 @@
 ## GasMan
 ## Jan. 12,2025
 
-
 import google.generativeai as genai
 import streamlit as st
 import os
+import re  # Import the regular expression module
 
 # Configure Google API
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+try:
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+    if not GOOGLE_API_KEY:
+        raise ValueError("GOOGLE_API_KEY environment variable not set.")
+    genai.configure(api_key=GOOGLE_API_KEY)
+    model = genai.GenerativeModel('gemini-pro') # Access the Gemini Pro model
+except ValueError as e:
+    st.error(f"Error: {e}")
+    st.stop()  # Stop execution if the API key is missing
+except Exception as e:
+    st.error(f"Error initializing the Gemini model: {e}")
+    st.stop()
 
 # Define teacher data
 teacher_data = {
@@ -39,27 +50,15 @@ teacher_data = {
 # Function to generate chatbot response
 def chatbot_response(prompt):
     try:
-        # Check if the prompt asks about hours for a specific course and semester
-        if "hours taught in Math 101 in the fall semester" in prompt.lower():
-            # Retrieve semester-specific data for Math 101 in Fall 2024
-            fall_data = teacher_data['semester_data'].get("Math 101", {}).get("fall_2024", {})
-            
-            if fall_data:
-                weeks_taught = fall_data.get("weeks_taught", 0)
-                hours_per_week = fall_data.get("hours_per_week", 0)
-                total_hours = weeks_taught * hours_per_week
-                return f"In the Fall semester of 2024, {teacher_data['name']} taught Math 101 for {total_hours} hours."
-            else:
-                return "No data available for Math 101 in the Fall semester."
+        # Improved extraction using regular expressions
+        match = re.search(r"hours taught in\s*([a-zA-Z0-9\s]+)\s*in the\s*([a-zA-Z0-9\s]+)\s*semester", prompt.lower())
+        if match:
+            course_name = match.group(1).strip()
+            semester_name = match.group(2).strip()
 
-        # General case for any other course
-        elif "hours taught in" in prompt.lower():
-            course_name = prompt.split("in")[1].strip().split("semester")[0].strip()
-            semester_name = prompt.split("semester")[-1].strip()
-            
             # Get the semester data for the specific course
             semester_data = teacher_data['semester_data'].get(course_name, {}).get(semester_name, {})
-            
+
             if semester_data:
                 weeks_taught = semester_data.get("weeks_taught", 0)
                 hours_per_week = semester_data.get("hours_per_week", 0)
@@ -67,9 +66,13 @@ def chatbot_response(prompt):
                 return f"In the {semester_name} semester, {teacher_data['name']} taught {course_name} for {total_hours} hours."
             else:
                 return f"No data available for {course_name} in the {semester_name} semester."
-
         else:
-            return "The provided data does not contain the specific information you're asking for."
+            # Use the LLM as a fallback
+            try:
+                response = model.generate_content(f"Answer the following question about Jane Doe. {prompt}")
+                return response.text
+            except Exception as e:
+                return f"Could not answer from internal data or using the LLM.  Error: {e}"
 
     except Exception as e:
         return f"Error: {e}"
@@ -101,17 +104,7 @@ submit_button = st.button("Send")
 
 if submit_button and user_input:
     with st.spinner("Thinking..."):
-        full_prompt = f"""
-        You are assisting a teacher with the following data:
-        - Name: {teacher_data['name']}
-        - Hours Taught: {teacher_data['hours_taught']}
-        - Courses Taught: {', '.join(teacher_data['courses_taught'])}
-        - Papers Graded: {teacher_data['papers_graded']}
-        - Schedule: {teacher_data['current_schedule']}
-        
-        Question: {user_input}
-        """
-        response = chatbot_response(full_prompt)
+        response = chatbot_response(user_input) # Directly pass the user's input
         st.success("Response:")
         st.write(response)
 
