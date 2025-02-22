@@ -40,17 +40,21 @@ teacher_data = {
             }
         },
         "Science 202": {
-            "fall_2024": {
-                "weeks_taught": 12,
-                "hours_per_week": 6,
-                "days": ["Monday", "Wednesday", "Friday"]
+            "semester_data": {
+                "fall_2024": {
+                    "weeks_taught": 12,
+                    "hours_per_week": 6,
+                    "days": ["Monday", "Wednesday", "Friday"]
+                }
             }
         },
         "History 303": {
-            "fall_2024": {
-                "weeks_taught": 12,
-                "hours_per_week": 6,
-                "days": ["Monday", "Wednesday", "Friday"]
+            "semester_data": {
+                "fall_2024": {
+                    "weeks_taught": 12,
+                    "hours_per_week": 6,
+                    "days": ["Monday", "Wednesday", "Friday"]
+                }
             }
         }
     },
@@ -68,8 +72,6 @@ def chatbot_response(prompt):
 
     # Local Data:  Regex with
     match_hours = re.search(r"(?:how many|what is the total|can you tell me the|how much) (?:hours|time) (?:were taught|did the instructor teach|was spent teaching|instruction time was given) (?:in|for|of)? ?([a-z\s\d]+)", prompt_lower)
-    match_courses = re.search(r"what (courses|subjects|classes) (does|is) (jane doe|the instructor)(.*)", prompt_lower)
-    match_schedule = re.search(r"what (is|times|are) (jane doe|the instructor)(.*)(schedule|timetable|teaching hours|work hours|teaching calendar)", prompt_lower)
 
     if match_hours:
         course = match_hours.group(1).strip()
@@ -82,24 +84,9 @@ def chatbot_response(prompt):
             return f"Jane Doe has taught {total_hours} hours in {course}."
         else:
             return f"No data available for {course}."
-    
-    elif match_courses: # LLM for the courses data
-        try:
-            response = model.generate_content(f"Give me a list of the course that Jane Doe teaches with only the names and comma separated: {prompt}")
-            return response.text
-        except Exception as e:
-            return f"Could not answer from internal data or using the LLM. Error: {e}"
-    
-    elif match_schedule: # LLM for the schedule data
-        try:
-            response = model.generate_content(f"Answer the following question about Jane Doe: What is Jane Doe's Schedule?. Please format in day with parenthesis time: {prompt}")
-            return response.text
-        except Exception as e:
-            return f"Could not answer from internal data or using the LLM. Error: {e}"
-    
     else:
         try: #LLM for all prompts
-            response = model.generate_content(f"Answer the following question about Jane Doe. If the question is about Jane Doe's schedule, please format in day with parenthesis time. For example, Monday (9:00-11:00 AM). If the question is about the list of courses please separate the course by commas.: {prompt}")
+            response = model.generate_content(f"You are a chatbot and need to provide the right data according to the context and the database available,  this database contains the information about Jane Doe with the courses, names, schedule. Answer the following question: {prompt}.   If the question is about Jane Doe's schedule, please format in day with parenthesis time. For example, Monday (9:00-11:00 AM). If the question is about the list of courses please separate the course by commas.")
             return response.text
         except Exception as e:
             return f"Could not answer from internal data or using the LLM.  Error: {e}"
