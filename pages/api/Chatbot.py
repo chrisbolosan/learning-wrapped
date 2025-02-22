@@ -24,6 +24,7 @@ except Exception as e:
 # Teacher data with courses, weeks taught, and hours per session
 teacher_data = {
     "name": "Jane Doe",
+    "hours_taught": 120,
     "courses_taught": {
         "Math 101": {
             "semester_data": {
@@ -57,6 +58,11 @@ teacher_data = {
                 }
             }
         }
+    },
+    "current_schedule": {
+        "Monday": "Math 101 (9:00-11:00 AM)",
+        "Wednesday": "Science 202 (10:00-12:00 PM)",
+        "Friday": "History 303 (1:00-3:00 PM)"
     }
 }
 
