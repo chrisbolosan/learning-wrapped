@@ -5,13 +5,16 @@
 import google.generativeai as genai
 import streamlit as st
 
-# Set up Google Gemini API key
-genai.configure(api_key="")
+import os
+import google.generativeai as genai
+import streamlit as st
 
-# Initialize the Gemini model
+
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
 model = genai.GenerativeModel("gemini-pro")
 
-# Simulated teacher data
+
 teacher_data = {
     "name": "Jane Doe",
     "hours_taught": 120,
@@ -24,7 +27,7 @@ teacher_data = {
     }
 }
 
-# Chatbot function using Gemini
+
 def chatbot_response(prompt):
     try:
         response = model.generate_content(prompt)
@@ -32,13 +35,13 @@ def chatbot_response(prompt):
     except Exception as e:
         return f"Error: {e}"
 
-# Streamlit UI
+
 st.set_page_config(page_title="Teacher Chatbot", layout="wide")
 
 st.title("📚 Teacher Management Chatbot")
 st.write("Ask the chatbot about your teaching stats, schedule, or anything related to your work!")
 
-# Display Teacher Data Summary
+
 st.sidebar.header("📊 Teacher Data Overview")
 st.sidebar.write(f"**Name:** {teacher_data['name']}")
 st.sidebar.write(f"**Hours Taught:** {teacher_data['hours_taught']} hours")
@@ -49,7 +52,7 @@ st.sidebar.subheader("📅 Weekly Schedule")
 for day, schedule in teacher_data['current_schedule'].items():
     st.sidebar.write(f"**{day}:** {schedule}")
 
-# Chat Interface
+
 st.subheader("💬 Chat with the Assistant")
 user_input = st.text_input("Enter your question:", placeholder="E.g., How many hours have I taught this week?")
 submit_button = st.button("Send")
@@ -70,7 +73,6 @@ if submit_button and user_input:
         st.success("Response:")
         st.write(response)
 
-# Feedback Section
 st.subheader("🌟 Feedback")
 feedback = st.text_area("Share your feedback about the chatbot!")
 if st.button("Submit Feedback"):
