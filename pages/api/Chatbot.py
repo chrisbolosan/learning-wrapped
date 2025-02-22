@@ -2,14 +2,16 @@
 ## Jan. 12,2025
 
 
-from openai import OpenAI
-
-client = OpenAI(api_key="AIzaSyDgrkFbxro878Xwm3vBRvbdCZ2bkVFljM8")
+import google.generativeai as genai
 import streamlit as st
 
-# Set up OpenAI API key
+# Set up Google Gemini API key
+genai.configure(api_key="")
 
-# Simulated teacher data for demo purposes
+# Initialize the Gemini model
+model = genai.GenerativeModel("gemini-pro")
+
+# Simulated teacher data
 teacher_data = {
     "name": "Jane Doe",
     "hours_taught": 120,
@@ -22,15 +24,11 @@ teacher_data = {
     }
 }
 
-# Chatbot function to query OpenAI
+# Chatbot function using Gemini
 def chatbot_response(prompt):
     try:
-        response = client.chat.completions.create(model="gpt-4",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant for managing teacher tasks."},
-            {"role": "user", "content": prompt}
-        ])
-        return response.choices[0].message.content.strip()
+        response = model.generate_content(prompt)
+        return response.text.strip()
     except Exception as e:
         return f"Error: {e}"
 
@@ -58,7 +56,6 @@ submit_button = st.button("Send")
 
 if submit_button and user_input:
     with st.spinner("Thinking..."):
-        # Include teacher data in the prompt for context
         full_prompt = f"""
         You are assisting a teacher with the following data:
         - Name: {teacher_data['name']}
