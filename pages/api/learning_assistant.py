@@ -71,7 +71,7 @@ def chatbot_response(prompt):
     else:
         return "[DEBUG] Sorry, I don't have enough information to answer that."
 
-# Example usage
+# Example usage 
 if __name__ == "__main__":
     question = "How many hours were taught for Math 101 this week?"
     response = chatbot_response(question)
