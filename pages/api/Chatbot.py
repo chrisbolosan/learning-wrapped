@@ -105,21 +105,32 @@ def get_hours_taught_this_week(course_name, semester="fall_2024", current_date=N
 def chatbot_response(prompt):
     prompt_lower = prompt.lower()
     print(f"[DEBUG] Received prompt: {prompt_lower}")  # Debugging statement
-    match = re.search(r"how many hours were taught(?: by [a-z\s]+)? in ([a-z\s\d]+)\??", prompt_lower)
 
-    if match:
-      course = match.group(1)
+    #Regex with 
+    match_hours = re.search(r"(?:how many|what is the total|can you tell me the|how much) (?:hours|time) (?:were taught|did the instructor teach|was spent teaching|instruction time was given) (?:in|for|of)? ?([a-z\s\d]+)", prompt_lower)
+    match_week = re.search(r"how long was ([a-z\s\d]+) taught this week\?", prompt_lower)
+    match_general = re.search(r"what courses does ([a-z\s\d]+) teach\?", prompt_lower)
+
+    if match_hours:
+      course = match_hours.group(1).strip()
       total_hours = 0
       for sem, data in teacher_data["semester_data"].get(course.title(), {}).items():
         total_hours += data.get("weeks_taught", 0) * data.get("hours_per_week", 0)
       return f"Jane Doe has taught {total_hours} hours in {course}."
+    
+    elif match_week:
+        course = match_week.group(1).strip()
+        return get_hours_taught_this_week(course)
 
-    elif "math 101" in prompt_lower and "this week" in prompt_lower:
-        return get_hours_taught_this_week("Math 101")
-    elif "science 202" in prompt_lower and "this week" in prompt_lower:
-        return get_hours_taught_this_week("Science 202")
-    elif "history 303" in prompt_lower and "this week" in prompt_lower:
-        return get_hours_taught_this_week("History 303")
+    elif "this week" in prompt_lower and ("math 101" in prompt_lower or "science 202" in prompt_lower or "history 303" in prompt_lower):
+        if "math 101" in prompt_lower:
+            return get_hours_taught_this_week("Math 101")
+        elif "science 202" in prompt_lower:
+            return get_hours_taught_this_week("Science 202")
+        elif "history 303" in prompt_lower:
+            return get_hours_taught_this_week("History 303")
+        else:
+            return "I'm sorry. This information is not available."
 
     else:
         try: #LLM for non-definitive prompts
