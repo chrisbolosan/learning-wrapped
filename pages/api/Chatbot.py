@@ -71,10 +71,15 @@ def chatbot_response(prompt):
             else:
                 #If there's no semester, calculate the total hours taught from available semesters
                 total_hours = 0
-                for semester in teacher_data['semester_data'].get(course_name, {}).values():
-                    weeks_taught = semester.get("weeks_taught", 0)
-                    hours_per_week = semester.get("hours_per_week", 0)
+                course_semesters = teacher_data['semester_data'].get(course_name, {}) # Get all the semesters for the course
+                print(f"[DEBUG] semesters: {course_semesters}")
+
+                for semester_name, semester_data in course_semesters.items():
+                    print(f"[DEBUG] Semester Name: {semester_name}, Semester Data: {semester_data}")
+                    weeks_taught = semester_data.get("weeks_taught", 0)
+                    hours_per_week = semester_data.get("hours_per_week", 0)
                     total_hours += weeks_taught * hours_per_week
+
                 if total_hours > 0:
                     return f"{teacher_data['name']} taught {course_name} for a total of {total_hours} hours across all semesters."
                 else:
