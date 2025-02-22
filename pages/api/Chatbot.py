@@ -20,6 +20,20 @@ teacher_data = {
     "hours_taught": 120,
     "courses_taught": ["Math 101", "Science 202", "History 303"],
     "papers_graded": 200,
+    "semester_data": {
+        "Math 101": {
+            "fall_2024": {
+                "weeks_taught": 12,  # Number of weeks the course is taught
+                "hours_per_week": 2  # Number of hours per week for Math 101
+            }
+        },
+        "Science 202": {
+            "spring_2024": {
+                "weeks_taught": 15,
+                "hours_per_week": 3  # Example for another course
+            }
+        }
+    },
     "current_schedule": {
         "Monday": "Math 101 (9:00-11:00 AM)",
         "Wednesday": "Science 202 (10:00-12:00 PM)",
@@ -30,8 +44,38 @@ teacher_data = {
 
 def chatbot_response(prompt):
     try:
-        response = model.generate_content(prompt)
-        return response.text.strip()
+        # Check if the prompt asks about hours for a specific course and semester
+        if "hours taught in Math 101 in the fall semester" in prompt.lower():
+            # Retrieve semester-specific data for Math 101 in Fall 2024
+            fall_data = teacher_data['semester_data'].get("Math 101", {}).get("fall_2024", {})
+            
+            if fall_data:
+                weeks_taught = fall_data.get("weeks_taught", 0)
+                hours_per_week = fall_data.get("hours_per_week", 0)
+                total_hours = weeks_taught * hours_per_week
+                return f"In the Fall semester of 2024, {teacher_data['name']} taught Math 101 for {total_hours} hours."
+            else:
+                return "No data available for Math 101 in the Fall semester."
+
+        # General case for any other course
+        elif "hours taught in" in prompt.lower():
+            course_name = prompt.split("in")[1].strip().split("semester")[0].strip()
+            semester_name = prompt.split("semester")[-1].strip()
+            
+            # Get the semester data for the specific course
+            semester_data = teacher_data['semester_data'].get(course_name, {}).get(semester_name, {})
+            
+            if semester_data:
+                weeks_taught = semester_data.get("weeks_taught", 0)
+                hours_per_week = semester_data.get("hours_per_week", 0)
+                total_hours = weeks_taught * hours_per_week
+                return f"In the {semester_name} semester, {teacher_data['name']} taught {course_name} for {total_hours} hours."
+            else:
+                return f"No data available for {course_name} in the {semester_name} semester."
+
+        else:
+            return "The provided data does not contain the specific information you're asking for."
+
     except Exception as e:
         return f"Error: {e}"
 
