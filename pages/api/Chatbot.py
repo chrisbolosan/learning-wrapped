@@ -25,13 +25,14 @@ except Exception as e:
 teacher_data = {
     "name": "Jane Doe",
     "hours_taught": 120,
-    "courses_taught": {
+    "courses_taught": ["Math 101", "Science 202", "History 303"],
+    "papers_graded": 200,
+    "semester_data": {
         "Math 101": {
-            "semester_data": {
-                "fall_2024": {
-                    "weeks_taught": 12,  # Total weeks taught in Fall 2024
-                    "hours_per_week": 6,  # 2 hours per day, 3 days per week
-                    "days": ["Monday", "Wednesday", "Friday"]  # Taught on these days
+            "fall_2024": {
+                "weeks_taught": 12,  # Total weeks taught in Fall 2024
+                "hours_per_week": 6,  # 2 hours per day, 3 days per week
+                "days": ["Monday", "Wednesday", "Friday"]  # Taught on these days
                 },
                 "spring_2024": {
                     "weeks_taught": 10,
@@ -100,8 +101,6 @@ def get_hours_taught_this_week(course_name, semester="fall_2024", current_date=N
         return f"{hours_per_week} hours were taught this week in {course_name}."
     else:
         return "No data for this week."
-
-
 
 # Function to handle chatbot response
 def chatbot_response(prompt):
