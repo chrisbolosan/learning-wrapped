@@ -1,4 +1,18 @@
 from datetime import datetime
+import google.generativeai as genai
+import os
+
+# Configure Google API
+try:
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+    if not GOOGLE_API_KEY:
+        raise ValueError("GOOGLE_API_KEY environment variable not set.")
+    genai.configure(api_key=GOOGLE_API_KEY)
+    model = genai.GenerativeModel('gemini-pro') # Access the Gemini Pro model
+except ValueError as e:
+    print(f"Error: {e}")
+except Exception as e:
+    print(f"Error initializing the Gemini model: {e}")
 
 # Teacher data with courses, weeks taught, and hours per session
 teacher_data = {
@@ -88,7 +102,11 @@ def chatbot_response(prompt):
     elif "history 303" in prompt_lower and "this week" in prompt_lower:
         return get_hours_taught_this_week("History 303")
     else:
-        return "[DEBUG] Sorry, I don't have enough information to answer that."
+        try: #LLM for non-definitive prompts
+            response = model.generate_content(f"Answer the following question about Jane Doe. {prompt}")
+            return response.text
+        except Exception as e:
+            return f"Could not answer from internal data or using the LLM.  Error: {e}"
 
 # Example usage
 if __name__ == "__main__":
