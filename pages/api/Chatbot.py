@@ -122,4 +122,4 @@ if submit_button and user_input:
 st.subheader("🌟 Feedback")
 feedback = st.text_area("Share your feedback about the chatbot!")
 if st.button("Submit Feedback"):
-    st.success("Thank you for your feedback!")git st
+    st.success("Thank you for your feedback!")
