@@ -51,21 +51,34 @@ teacher_data = {
 def chatbot_response(prompt):
     try:
         # Improved extraction using regular expressions
-        match = re.search(r"hours taught in\s*([a-zA-Z0-9\s]+)\s*in the\s*([a-zA-Z0-9\s]+)\s*semester", prompt.lower())
+        match = re.search(r"hours taught in\s*([a-zA-Z0-9\s]+)(?:\s*by\s*[a-zA-Z\s]+)?(?:\s*in the\s*([a-zA-Z0-9\s]+)\s*semester)?", prompt.lower())
         if match:
             course_name = match.group(1).strip()
-            semester_name = match.group(2).strip()
+            semester_name = match.group(2).strip() if match.group(2) else None
 
+            # If there's a semester grab the data.
+            if semester_name:
             # Get the semester data for the specific course
-            semester_data = teacher_data['semester_data'].get(course_name, {}).get(semester_name, {})
+                semester_data = teacher_data['semester_data'].get(course_name, {}).get(semester_name, {})
 
-            if semester_data:
-                weeks_taught = semester_data.get("weeks_taught", 0)
-                hours_per_week = semester_data.get("hours_per_week", 0)
-                total_hours = weeks_taught * hours_per_week
-                return f"In the {semester_name} semester, {teacher_data['name']} taught {course_name} for {total_hours} hours."
+                if semester_data:
+                    weeks_taught = semester_data.get("weeks_taught", 0)
+                    hours_per_week = semester_data.get("hours_per_week", 0)
+                    total_hours = weeks_taught * hours_per_week
+                    return f"In the {semester_name} semester, {teacher_data['name']} taught {course_name} for {total_hours} hours."
+                else:
+                    return f"No data available for {course_name} in the {semester_name} semester."
             else:
-                return f"No data available for {course_name} in the {semester_name} semester."
+                #If there's no semester, calculate the total hours taught from available semesters
+                total_hours = 0
+                for semester in teacher_data['semester_data'].get(course_name, {}).values():
+                    weeks_taught = semester.get("weeks_taught", 0)
+                    hours_per_week = semester.get("hours_per_week", 0)
+                    total_hours += weeks_taught * hours_per_week
+                if total_hours > 0:
+                    return f"{teacher_data['name']} taught {course_name} for a total of {total_hours} hours across all semesters."
+                else:
+                    return f"No data available for {course_name}."
         else:
             # Use the LLM as a fallback
             try:
