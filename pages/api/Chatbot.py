@@ -106,8 +106,9 @@ def chatbot_response(prompt):
     match_hours = re.search(r"(?:how many|what is the total|can you tell me the|how much) (?:hours|time) (?:were taught|did the instructor teach|was spent teaching|instruction time was given) (?:in|for|of)? ?([a-z\s\d]+)", prompt_lower)
     match_week = re.search(r"how long was ([a-z\s\d]+) taught this week\?", prompt_lower)
 
-    # Prompt the LLM
-    match_general = re.search(r"what (courses|is|times|are the) (does jane doe|jane doe's)? ?(.*)", prompt_lower)
+    # Prompt the LLM with some additional checks
+    match_courses = re.search(r"what (courses|subjects|classes) (does|is) (jane doe|the instructor)(.*)", prompt_lower)
+    match_schedule = re.search(r"what (is|times|are) (jane doe|the instructor)(.*)(schedule|timetable|teaching hours|work hours|teaching calendar)", prompt_lower)
     
 
     if match_hours:
@@ -126,7 +127,7 @@ def chatbot_response(prompt):
         course = match_week.group(1).strip()
         return get_hours_taught_this_week(course)
     
-    elif match_general: # LLM for the other prompts
+    elif match_courses or match_schedule: # LLM for the other prompts
         try:
             response = model.generate_content(f"Answer the following question about Jane Doe: {prompt}")
             return response.text
@@ -157,8 +158,8 @@ st.sidebar.subheader("📅 Weekly Schedule")
 if 'current_schedule' in teacher_data and isinstance(teacher_data['current_schedule'], dict):
     for day, schedule in teacher_data['current_schedule'].items():
         st.sidebar.write(f"**{day}:** {schedule}")
-else:
-    st.sidebar.write("Current schedule data is missing or incorrectly formatted.")
+    else:
+        st.sidebar.write("Current schedule data is missing or incorrectly formatted.")
 
 # Chatbot interaction
 st.subheader("💬 Chat with the Assistant")
