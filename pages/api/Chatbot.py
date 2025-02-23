@@ -40,21 +40,17 @@ teacher_data = {
             }
         },
         "Science 202": {
-            "semester_data": {
-                "fall_2024": {
-                    "weeks_taught": 12,
-                    "hours_per_week": 6,
-                    "days": ["Monday", "Wednesday", "Friday"]
-                }
+            "fall_2024": {
+                "weeks_taught": 12,
+                "hours_per_week": 6,
+                "days": ["Monday", "Wednesday", "Friday"]
             }
         },
         "History 303": {
-            "semester_data": {
-                "fall_2024": {
-                    "weeks_taught": 12,
-                    "hours_per_week": 6,
-                    "days": ["Monday", "Wednesday", "Friday"]
-                }
+            "fall_2024": {
+                "weeks_taught": 12,
+                "hours_per_week": 6,
+                "days": ["Monday", "Wednesday", "Friday"]
             }
         }
     },
@@ -70,26 +66,12 @@ def chatbot_response(prompt):
     prompt_lower = prompt.lower()
     print(f"[DEBUG] Received prompt: {prompt_lower}")  # Debugging statement
 
-    # Local Data:  Regex with
-    match_hours = re.search(r"(?:how many|what is the total|can you tell me the|how much) (?:hours|time) (?:were taught|did the instructor teach|was spent teaching|instruction time was given) (?:in|for|of)? ?([a-z\s\d]+)", prompt_lower)
-
-    if match_hours:
-        course = match_hours.group(1).strip()
-        total_hours = 0
-        semesters = teacher_data['semester_data'].get(course.title(), {})
-
-        if semesters:  # Ensure the course exists
-            for semester, data in semesters.items():
-                total_hours += data.get("weeks_taught", 0) * data.get("hours_per_week", 0)
-            return f"Jane Doe has taught {total_hours} hours in {course}."
-        else:
-            return f"No data available for {course}."
-    else:
-        try: #LLM for all prompts
-            response = model.generate_content(f"You are a chatbot and need to provide the right data according to the context and the database available,  this database contains the information about Jane Doe with the courses, names, schedule. Answer the following question: {prompt}.   If the question is about Jane Doe's schedule, please format in day with parenthesis time. For example, Monday (9:00-11:00 AM). If the question is about the list of courses please separate the course by commas.")
-            return response.text
-        except Exception as e:
-            return f"Could not answer from internal data or using the LLM.  Error: {e}"
+    try:
+        # Use LLM to answer all questions
+        response = model.generate_content(f"You are a chatbot providing information about Jane Doe, a teacher.  Here is Jane Doe's data: Name: Jane Doe, Hours Taught: 120, Courses Taught: Math 101, Science 202, History 303, Papers Graded: 200.  Her schedule is:  Monday: Math 101 (9:00-11:00 AM), Wednesday: Science 202 (10:00-12:00 PM), Friday: History 303 (1:00-3:00 PM). If the question is about Jane Doe's schedule, please format in day with parenthesis time. For example, Monday (9:00-11:00 AM). If the question is about the list of courses please separate the course by commas. Answer the question to the best of your ability: {prompt}")
+        return response.text
+    except Exception as e:
+        return f"Could not answer from internal data or using the LLM.  Error: {e}"
 
 # Streamlit setup
 st.set_page_config(page_title="Teacher Chatbot", layout="wide")
@@ -108,8 +90,8 @@ st.sidebar.subheader("📅 Weekly Schedule")
 if 'current_schedule' in teacher_data and isinstance(teacher_data['current_schedule'], dict):
     for day, schedule in teacher_data['current_schedule'].items():
         st.sidebar.write(f"**{day}:** {schedule}")
-    else:
-        st.sidebar.write("Current schedule data is missing or incorrectly formatted.")
+else:
+    st.sidebar.write("Current schedule data is missing or incorrectly formatted.")
 
 # Chatbot interaction
 st.subheader("💬 Chat with the Assistant")
