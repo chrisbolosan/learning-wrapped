@@ -1,5 +1,6 @@
 ## GasMan
 ## Jan. 12,2025
+
 import google.generativeai as genai
 import streamlit as st
 import os
@@ -94,7 +95,6 @@ def chatbot_response(prompt):
             return f"Jane Doe has taught {total_hours} hours in {course}."
         else:
             return f"No data available for {course}."
-
     else:
         return "I'm sorry, I don't have the answer."
 
