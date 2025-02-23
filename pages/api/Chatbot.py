@@ -66,22 +66,7 @@ def chatbot_response(prompt):
     prompt_lower = prompt.lower()
     print(f"[DEBUG] Received prompt: {prompt_lower}")  # Debugging statement
 
-    # First, check for LLM prompts
-    if "what courses does jane doe teach" in prompt_lower:
-        try:
-            response = model.generate_content(f"What courses does Jane Doe teach? Provide a list of courses comma separated")
-            return response.text
-        except Exception as e:
-            return f"Could not answer from internal data or using the LLM.  Error: {e}"
-
-    if "what is jane doe's schedule" in prompt_lower:
-        try:
-            response = model.generate_content(f"Provide Jane Doe's schedule, please format it in day: (start time - end time)")
-            return response.text
-        except Exception as e:
-            return f"Could not answer from internal data or using the LLM.  Error: {e}"
-
-    # Now, check for local data prompts
+    # Local Data:  Regex with
     match_hours = re.search(r"(?:how many|what is the total|can you tell me the|how much) (?:hours|time) (?:were taught|did the instructor teach|was spent teaching|instruction time was given) (?:in|for|of)? ?([a-z\s\d]+)", prompt_lower)
 
     if match_hours:
@@ -95,6 +80,21 @@ def chatbot_response(prompt):
             return f"Jane Doe has taught {total_hours} hours in {course}."
         else:
             return f"No data available for {course}."
+    
+    elif "what courses does jane doe teach" in prompt_lower:
+        try:
+            response = model.generate_content(f"Provide me with the courses listed, here in a comma separated form: Math 101, Science 202, History 303")
+            return response.text
+        except Exception as e:
+            return f"Could not answer from internal data or using the LLM.  Error: {e}"
+
+    elif "what is jane doe's schedule" in prompt_lower:
+        try:
+            response = model.generate_content(f"Answer the following question about Jane Doe: What is Jane Doe's Schedule?. Please format in day with parenthesis time. The answer is: Monday: Math 101 (9:00-11:00 AM), Wednesday: Science 202 (10:00-12:00 PM), Friday: History 303 (1:00-3:00 PM)")
+            return response.text
+        except Exception as e:
+            return f"Could not answer from internal data or using the LLM.  Error: {e}"
+
     else:
         return "I'm sorry, I don't have the answer."
 
