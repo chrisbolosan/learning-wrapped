@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,6 +14,10 @@ import {
   Filler,
 } from 'chart.js';
 import { Line, Doughnut } from 'react-chartjs-2';
+import { TeacherData } from '@/types/teacher';
+import { TeacherStats, calculateTeacherStats } from '@/services/teacherService';
+import { GradesChart } from './components/GradesChart';
+import { CertificationCards } from './components/CertificationCards';
 
 ChartJS.register(
   CategoryScale,
@@ -28,54 +32,88 @@ ChartJS.register(
 );
 
 export default function Dashboard() {
-  const subjectData = {
-    labels: ['Math', 'Science', 'History', 'English'],
-    datasets: [
-      {
-        data: [30, 25, 20, 25],
-        backgroundColor: ['#4C6EF5', '#9775FA', '#FF6B6B', '#748FFC'],
-        borderWidth: 0,
+  const [teacherData] = useState<TeacherData>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('teacherData');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          parsed.currentSchedule = parsed.currentSchedule.map(
+            (s: { date: string; schedule: string }) => ({
+              ...s,
+              date: new Date(s.date),
+            })
+          );
+          return parsed;
+        }
+      }
+    } catch (error) {
+      console.error('Error loading teacher data:', error);
+    }
+
+    return {
+      name: 'Jane Doe',
+      hoursTaught: 120,
+      coursesTaught: ['Math 101', 'Science 202', 'History 303'],
+      papersGraded: 200,
+      currentSchedule: [
+        { date: new Date(), schedule: 'Math 101 (9:00-11:00 AM)' },
+      ],
+      grades: {},
+    };
+  });
+
+  const [stats, setStats] = useState<TeacherStats | null>(null);
+  const [selectedSemester, setSelectedSemester] = useState('Fall 2024');
+
+  useEffect(() => {
+    setStats(calculateTeacherStats(teacherData));
+  }, [teacherData]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('teacherData');
+    console.log('Saved data:', JSON.parse(saved || '{}'));
+  }, []);
+
+  if (!stats) return null;
+
+  const transformData = () => {
+    if (!stats) return null;
+
+    const subjects = Object.keys(stats.lessonsCompleted);
+
+    return {
+      subjectData: {
+        labels: subjects,
+        datasets: [
+          {
+            data: subjects.map((subject) => stats.lessonsCompleted[subject]),
+            backgroundColor: ['#4C6EF5', '#9775FA', '#FF6B6B', '#748FFC'],
+            borderWidth: 0,
+          },
+        ],
       },
-    ],
+      weeklyData: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+        datasets: subjects.map((subject, index) => ({
+          label: subject,
+          data: Object.values(stats.weeklyActivity[subject]),
+          borderColor: ['#4C6EF5', '#9775FA', '#FF6B6B', '#748FFC'][index],
+          backgroundColor: [
+            `rgba(76, 110, 245, 0.1)`,
+            `rgba(151, 117, 250, 0.1)`,
+            `rgba(255, 107, 107, 0.1)`,
+            `rgba(116, 143, 252, 0.1)`,
+          ][index],
+          fill: true,
+          tension: 0.4,
+        })),
+      },
+    };
   };
 
-  const weeklyData = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-    datasets: [
-      {
-        label: 'Math',
-        data: [4, 3, 5, 2, 3],
-        borderColor: '#4C6EF5',
-        backgroundColor: 'rgba(76, 110, 245, 0.1)',
-        fill: true,
-        tension: 0.4,
-      },
-      {
-        label: 'Science',
-        data: [2, 4, 3, 5, 4],
-        borderColor: '#9775FA',
-        backgroundColor: 'rgba(151, 117, 250, 0.1)',
-        fill: true,
-        tension: 0.4,
-      },
-      {
-        label: 'English',
-        data: [3, 2, 4, 3, 5],
-        borderColor: '#748FFC',
-        backgroundColor: 'rgba(116, 143, 252, 0.1)',
-        fill: true,
-        tension: 0.4,
-      },
-      {
-        label: 'History',
-        data: [5, 3, 2, 4, 3],
-        borderColor: '#FF6B6B',
-        backgroundColor: 'rgba(255, 107, 107, 0.1)',
-        fill: true,
-        tension: 0.4,
-      },
-    ],
-  };
+  const chartData = transformData();
+  if (!chartData || !stats) return null;
 
   return (
     <div className="min-h-screen bg-[#13141f] p-4 md:p-8">
@@ -97,7 +135,7 @@ export default function Dashboard() {
             </h2>
             <div className="h-[300px]">
               <Doughnut
-                data={subjectData}
+                data={chartData.subjectData}
                 options={{
                   responsive: true,
                   maintainAspectRatio: false,
@@ -118,7 +156,7 @@ export default function Dashboard() {
             </h2>
             <div className="h-[300px]">
               <Doughnut
-                data={subjectData}
+                data={chartData.subjectData}
                 options={{
                   responsive: true,
                   maintainAspectRatio: false,
@@ -155,7 +193,7 @@ export default function Dashboard() {
           </div>
           <div className="h-[400px]">
             <Line
-              data={weeklyData}
+              data={chartData.weeklyData}
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
@@ -181,15 +219,19 @@ export default function Dashboard() {
 
         <div className="bg-[#1a1b26] rounded-xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-white">
-              Fall 2024 Grades
-            </h2>
-            <select className="bg-[#13141f] text-white px-3 py-1 rounded">
-              <option>FALL 2024</option>
-              <option>SPRING 2024</option>
+            <h2 className="text-xl font-semibold text-white">Course Grades</h2>
+            <select
+              className="bg-[#13141f] text-white px-3 py-1 rounded"
+              value={selectedSemester}
+              onChange={(e) => setSelectedSemester(e.target.value)}
+            >
+              <option value="Fall 2024">Fall 2024</option>
+              <option value="Spring 2024">Spring 2024</option>
             </select>
           </div>
-          {/* grades visuals here  */}
+          <div className="h-[300px]">
+            <GradesChart stats={stats} selectedSemester={selectedSemester} />
+          </div>
         </div>
 
         <div className="bg-[#1a1b26] rounded-xl p-6">
@@ -197,15 +239,8 @@ export default function Dashboard() {
             <h2 className="text-xl font-semibold text-white">
               Certifications and Rewards
             </h2>
-            <select className="bg-[#13141f] text-white px-3 py-1 rounded">
-              <option>3 SEMESTERS</option>
-              <option>2 SEMESTERS</option>
-              <option>1 SEMESTER</option>
-            </select>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {/* certs here */}
-          </div>
+          <CertificationCards certifications={stats.certifications} />
         </div>
       </div>
     </div>

@@ -113,7 +113,7 @@ export const Course: React.FC<CourseProps> = ({
                 </label>
                 <textarea
                   className="w-full bg-gray-700/50 rounded-lg p-3 text-gray-300 placeholder-gray-500"
-                  placeholder="Describe the target audience."
+                  placeholder="Describe the target audience. Give as much detail as you’d like to better adapt the exercise to your audience."
                   rows={4}
                   value={audienceInput}
                   onChange={(e) => setAudienceInput(e.target.value)}

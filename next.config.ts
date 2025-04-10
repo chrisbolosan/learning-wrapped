@@ -1,13 +1,12 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  experimental: {
-    turbo: {
-      rules: {
-        '*.node': ['*'],
-      },
+  turbopack: {
+    rules: {
+      '*.node': ['*'],
     },
   },
+
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   trailingSlash: false,
 

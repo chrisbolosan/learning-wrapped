@@ -5,24 +5,43 @@ import React, { useState, KeyboardEvent } from 'react';
 import Confetti from 'react-confetti';
 import TeacherPanel from '../components/Panel';
 import Link from 'next/link';
-
 interface TeacherData {
   name: string;
   hoursTaught: number;
   coursesTaught: string[];
   papersGraded: number;
   currentSchedule: { date: Date; schedule: string }[];
+  grades: {
+    [subject: string]: { [term: string]: number };
+  };
 }
 
 export default function ChatbotPage() {
-  const [teacherData, setTeacherData] = useState<TeacherData>({
-    name: 'Jane Doe',
-    hoursTaught: 120,
-    coursesTaught: ['Math 101', 'Science 202', 'History 303'],
-    papersGraded: 200,
-    currentSchedule: [
-      { date: new Date(), schedule: 'Math 101 (9:00-11:00 AM)' },
-    ],
+  const [teacherData, setTeacherData] = useState<TeacherData>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('teacherData');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        parsed.currentSchedule = parsed.currentSchedule.map(
+          (s: { date: string; schedule: string }) => ({
+            ...s,
+            date: new Date(s.date),
+          })
+        );
+        return parsed;
+      }
+    }
+
+    return {
+      name: 'Jane Doe',
+      hoursTaught: 120,
+      coursesTaught: ['Math 101', 'Science 202', 'History 303'],
+      papersGraded: 200,
+      currentSchedule: [
+        { date: new Date(), schedule: 'Math 101 (9:00-11:00 AM)' },
+      ],
+      grades: {},
+    };
   });
 
   const [userInput, setUserInput] = useState<string>('');
@@ -33,7 +52,11 @@ export default function ChatbotPage() {
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
 
   const handleTeacherDataUpdate = (updatedData: Partial<TeacherData>) => {
-    setTeacherData((prev) => ({ ...prev, ...updatedData }));
+    setTeacherData((prev) => {
+      const newData = { ...prev, ...updatedData };
+      localStorage.setItem('teacherData', JSON.stringify(newData));
+      return newData;
+    });
   };
 
   const handleChat = async () => {
