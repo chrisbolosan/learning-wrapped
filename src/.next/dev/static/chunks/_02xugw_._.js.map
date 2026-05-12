@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/chrisbolosan/Desktop/Projects/hackathon/learning-wrapped/src/app/page.tsx"],"sourcesContent":["'use client';\n\nimport React, { useEffect } from 'react';\nimport { useRouter } from 'next/navigation';\n\nconst Page: React.FC = () => {\n  const router = useRouter();\n\n  useEffect(() => {\n    router.push('/spaces');\n  }, [router]);\n\n  return null;\n};\n\nexport default Page;\n"],"names":["Page","router","push"],"mappings":";;;;AAEA;AACA;;AAHA;;;AAKA,MAAMA,OAAiB;;IACrB,MAAMC,SAAS,IAAA,kJAAS;IAExB,IAAA,0KAAS;0BAAC;YACRA,OAAOC,IAAI,CAAC;QACd;yBAAG;QAACD;KAAO;IAEX,OAAO;AACT;GARMD;;QACW,kJAAS;;;KADpBA;uCAUSA"}},
+    {"offset": {"line": 41, "column": 0}, "map": {"version":3,"sources":["file:///Users/chrisbolosan/Desktop/Projects/hackathon/learning-wrapped/node_modules/next/navigation.js"],"sourcesContent":["module.exports = require('./dist/client/components/navigation')\n"],"names":["module","exports"],"mappings":"AAAAA,OAAOC,OAAO","ignoreList":[0]}}]
+}

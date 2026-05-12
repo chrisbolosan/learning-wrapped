@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/chrisbolosan/Desktop/Projects/hackathon/learning-wrapped/src/app/page.tsx"],"sourcesContent":["'use client';\n\nimport React, { useEffect } from 'react';\nimport { useRouter } from 'next/navigation';\n\nconst Page: React.FC = () => {\n  const router = useRouter();\n\n  useEffect(() => {\n    router.push('/spaces');\n  }, [router]);\n\n  return null;\n};\n\nexport default Page;\n"],"names":["Page","router","push"],"mappings":";;;;AAEA;AACA;AAHA;;;AAKA,MAAMA,OAAiB;IACrB,MAAMC,SAAS,IAAA,+IAAS;IAExB,IAAA,kNAAS,EAAC;QACRA,OAAOC,IAAI,CAAC;IACd,GAAG;QAACD;KAAO;IAEX,OAAO;AACT;uCAEeD"}}]
+}

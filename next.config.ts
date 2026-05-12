@@ -27,7 +27,6 @@ const nextConfig: NextConfig = {
             key: 'Access-Control-Allow-Credentials',
             value: 'true',
           },
-
           {
             key: 'X-Frame-Options',
             value: 'SAMEORIGIN',
