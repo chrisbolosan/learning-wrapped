@@ -15,7 +15,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
 }) => {
   return (
     <div className="bg-[#1a1b26] rounded-lg border border-purple-500/20 h-full">
-      <div className="p-4 flex flex-col items-center justify-center relative min-h-[200px]">
+      <div className="p-4 flex flex-col items-center justify-center relative min-h-37.5">
         <button
           onClick={onToggleFavorite}
           className="absolute top-3 right-3 text-white hover:scale-110 transition-transform"

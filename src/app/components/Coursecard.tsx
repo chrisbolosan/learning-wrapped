@@ -20,7 +20,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
   onToggleFavorite,
 }) => {
   return (
-    <div className="bg-[#1a1b26] rounded-lg overflow-hidden border border-blue-900/30 max-w-80">
+    <div className="bg-[#1a1b26] rounded-lg overflow-hidden border border-blue-900/30 w-full h-full flex flex-col">
       <Link href={`/courses/${urlSlug}`}>
         <button className="w-full btn-custom">Open</button>
       </Link>
@@ -49,7 +49,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
           </svg>
         </button>
       </div>
-      <div className="p-4">
+      <div className="p-4 flex-1">
         <h3 className="text-white text-lg font-medium mb-2">{title}</h3>
         {description && (
           <p className="text-gray-400 text-sm line-clamp-2">{description}</p>

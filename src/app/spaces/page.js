@@ -35,7 +35,8 @@ const DashboardLayout = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#13141f] text-white p-4 md:p-6 lg:p-8 space-y-8 md:space-y-12">
+    <div className="min-h-screen bg-[#13141f] text-white">
+      <div className="max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-10 py-6 md:py-8 lg:py-10 space-y-10 md:space-y-14">
       <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       {/* Favorites Section */}
@@ -168,6 +169,7 @@ const DashboardLayout = () => {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 };

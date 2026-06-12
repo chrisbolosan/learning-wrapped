@@ -20,4 +20,10 @@ export const courseData: Record<string, Course> = {
       'Dive into the Science Lab! Explore experiments and fascinating facts designed to make science fun and accessible for all students. With AI-generated challenges and step-by-step explanations, learners can practice and explore a variety of science concepts while building their skills in an exciting, hands-on way. Whether solving puzzles or tackling creative problems, the Science Lab encourages curiosity and active learning.',
     image: '/space.jpg',
   },
+  english: {
+    title: 'English Language Arts',
+    subtitle: 'Enhance your reading and writing skills.',
+    description: 'Welcome to the English Language Arts course!',
+    image: '/space.jpg',
+  },
 };
